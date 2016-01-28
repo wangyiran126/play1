@@ -455,7 +455,7 @@ public class Play {
         try {
 
             if (started) {
-                stop();
+                stop();//停止plugin和缓存
             }
 
             if( standalonePlayServer) {
@@ -523,7 +523,7 @@ public class Play {
 
 
             // Try to load all classes
-            Play.classloader.getAllClasses();
+            Play.classloader.getAllClasses();//载入类并编译成二进制码
 
             // Routes
             Router.detectChanges(ctxPath);
@@ -632,7 +632,7 @@ public class Play {
         try {
             pluginCollection.beforeDetectingChanges();
             if(!pluginCollection.detectClassesChange()) {
-                classloader.detectChanges();
+                classloader.detectChanges();//如果有类有改变,则抛RuntimeException异常,执行start
             }
             Router.detectChanges(ctxPath);
             pluginCollection.detectChange();

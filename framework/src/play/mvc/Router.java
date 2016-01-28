@@ -55,7 +55,7 @@ public class Router {
     public static void load(String prefix) {
         routes.clear();
         actionRoutesCache.clear();
-        parse(Play.routes, prefix);
+        parse(Play.routes, prefix);//重新载入routes
         lastLoading = System.currentTimeMillis();
         // Plugins
         Play.pluginCollection.onRoutesLoaded();
@@ -233,8 +233,8 @@ public class Router {
         if (Play.mode == Mode.PROD && lastLoading > 0) {
             return;
         }
-        if (Play.routes.lastModified() > lastLoading) {
-            load(prefix);
+        if (Play.routes.lastModified() > lastLoading) {//如果routes载入后又有修改
+            load(prefix);//清楚route并重新载入
         } else {
             for (VirtualFile file : Play.modulesRoutes.values()) {
                 if (file.lastModified() > lastLoading) {
@@ -248,7 +248,7 @@ public class Router {
     /**
      * All the loaded routes.
      */
-    public static List<Route> routes = new CopyOnWriteArrayList<Route>();
+    public static List<Route> routes = new CopyOnWriteArrayList<Route>();//线程安全的当add
 
     public static void routeOnlyStatic(Http.Request request) {
         for (Route route : routes) {

@@ -22,6 +22,7 @@ import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
 import org.eclipse.jdt.internal.compiler.problem.DefaultProblemFactory;
 import org.eclipse.jdt.internal.compiler.Compiler;
 
+import org.junit.Test;
 import play.Logger;
 import play.Play;
 import play.classloading.ApplicationClasses.ApplicationClass;
@@ -292,4 +293,7 @@ public class ApplicationCompiler {
         jdtCompiler.compile(compilationUnits);
 
     }
+
+
+
 }

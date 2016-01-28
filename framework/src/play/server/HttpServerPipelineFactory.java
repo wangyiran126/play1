@@ -19,7 +19,7 @@ public class HttpServerPipelineFactory implements ChannelPipelineFactory {
 
     protected static Map<String, Class> classes = new HashMap<String, Class>();
 
-    public ChannelPipeline getPipeline() throws Exception {
+    public ChannelPipeline getPipeline() throws Exception {//放置handler到pipeline
 
         ChannelPipeline pipeline = pipeline();
         
@@ -46,7 +46,7 @@ public class HttpServerPipelineFactory implements ChannelPipelineFactory {
                 instance = getInstance(handler);
                 if (instance != null) {
                     pipeline.addLast(name, instance);
-                    playHandler.pipelines.put(name, instance);
+                    playHandler.pipelines.put(name, instance);//把playhandler放置到Pipeline里
                 }
             } catch (Throwable e) {
                 Logger.error(" error adding " + handler, e);

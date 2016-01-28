@@ -330,7 +330,7 @@ public class Scope {
     /**
      * HTTP params
      */
-    public static class Params {
+    public static class Params {//参数 包含request等
         // ThreadLocal access
 
         public static ThreadLocal<Params> current = new ThreadLocal<Params>();

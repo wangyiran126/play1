@@ -83,7 +83,7 @@ public class ActionInvoker {
         // Find the action method
         try {
             Method actionMethod = null;
-            Object[] ca = getActionMethod(request.action);
+            Object[] ca = getActionMethod(request.action);//找到方法
             actionMethod = (Method) ca[1];
             request.controller = ((Class) ca[0]).getName().substring(12).replace("$", "");
             request.controllerClass = ((Class) ca[0]);
@@ -109,7 +109,7 @@ public class ActionInvoker {
 
         try {
 
-            resolve(request, response);
+            resolve(request, response);//设置request请求的方法名,参数等等
             Method actionMethod = request.invokedMethod;
 
             // 1. Prepare request params
@@ -152,15 +152,15 @@ public class ActionInvoker {
                 if ((request.method.equals("GET") || request.method.equals("HEAD")) && actionMethod.isAnnotationPresent(CacheFor.class)) {
                     cacheKey = actionMethod.getAnnotation(CacheFor.class).id();
                     if ("".equals(cacheKey)) {
-                        cacheKey = "urlcache:" + request.url + request.querystring;
+                        cacheKey = "urlcache:" + request.url + request.querystring;//缓存的key 按每个url的请求
                     }
                     actionResult = (Result) play.cache.Cache.get(cacheKey);
                 }
 
-                if (actionResult == null) {
+                if (actionResult == null) {//先从缓存取结果,如果没有在调用url
                     ControllerInstrumentation.initActionCall();
                     try {
-                        inferResult(invokeControllerMethod(actionMethod));
+                        inferResult(invokeControllerMethod(actionMethod));//创建controller类并调用url对应的方法
                     } catch (Result result) {
                         actionResult = result;
                         // Cache it if needed
@@ -467,7 +467,7 @@ public class ActionInvoker {
         Http.Request request = Http.Request.current();
 
         if (!isStatic && request.controllerInstance == null) {
-            request.controllerInstance = request.controllerClass.newInstance();
+            request.controllerInstance = request.controllerClass.newInstance();//创建controller类
         }
 
         Object[] args = forceArgs != null ? forceArgs : getActionMethodArgs(method, request.controllerInstance);
@@ -487,7 +487,7 @@ public class ActionInvoker {
             }
         }
 
-        return invoke(method, request.controllerInstance, args);
+        return invoke(method, request.controllerInstance, args);//调用controller方法
     }
 
     static Object invoke(Method method, Object instance, Object[] realArgs) throws Exception {
@@ -582,7 +582,7 @@ public class ActionInvoker {
             }
             String controller = fullAction.substring(0, fullAction.lastIndexOf("."));
             String action = fullAction.substring(fullAction.lastIndexOf(".") + 1);
-            controllerClass = Play.classloader.getClassIgnoreCase(controller);
+            controllerClass = Play.classloader.getClassIgnoreCase(controller);//找到对应的类
             if (controllerClass == null) {
                 throw new ActionNotFoundException(fullAction, new Exception("Controller " + controller + " not found"));
             }
@@ -594,7 +594,7 @@ public class ActionInvoker {
                             new Exception("class " + controller + " does not extend play.mvc.Controller"));
                 }
             }
-            actionMethod = Java.findActionMethod(action, controllerClass);
+            actionMethod = Java.findActionMethod(action, controllerClass);//找到该方法
             if (actionMethod == null) {
                 throw new ActionNotFoundException(fullAction,
                         new Exception("No method public static void " + action + "() was found in class " + controller));

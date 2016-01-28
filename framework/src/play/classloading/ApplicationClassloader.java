@@ -51,7 +51,7 @@ public class ApplicationClassloader extends ClassLoader {
         super(ApplicationClassloader.class.getClassLoader());
         // Clean the existing classes
         for (ApplicationClass applicationClass : Play.classes.all()) {
-            applicationClass.uncompile();
+            applicationClass.uncompile();//清除每个类
         }
         pathHash = computePathHash();
         try {
@@ -421,7 +421,7 @@ public class ApplicationClassloader extends ClassLoader {
                         }
                     }
 
-                    Play.classes.compiler.compile(classNames.toArray(new String[classNames.size()]));
+                    Play.classes.compiler.compile(classNames.toArray(new String[classNames.size()]));//把类编译成二进制码,使jvm可以被理解
 
                 }
 
@@ -442,7 +442,7 @@ public class ApplicationClassloader extends ClassLoader {
         }
         return allClasses;
     }
-    List<Class> allClasses = null;
+    List<Class> allClasses = null;//载入的java类,可以利用反射获取方法等
 
     /**
      * Retrieve all application classes assignable to this class.

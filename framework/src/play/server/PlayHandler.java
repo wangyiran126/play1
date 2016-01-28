@@ -187,7 +187,7 @@ public class PlayHandler extends SimpleChannelUpstreamHandler {
                     copyResponse(ctx, request, response, nettyRequest);
                 } else {
 
-                    // Deleguate to Play framework
+                    // Deleguate to Play framework//每个请求都调用一个线程
                     Invoker.invoke(new NettyInvocation(request, response, ctx, nettyRequest, messageEvent));
 
                 }
@@ -260,7 +260,7 @@ public class PlayHandler extends SimpleChannelUpstreamHandler {
                     }
                     return false;
                 }
-                Router.routeOnlyStatic(request);
+                Router.routeOnlyStatic(request);//看是否route有匹配这个url,如果没有则抛出异常
                 super.init();
             } catch (NotFound nf) {
                 serve404(nf, ctx, request, nettyRequest);
@@ -323,7 +323,7 @@ public class PlayHandler extends SimpleChannelUpstreamHandler {
             // Check the exceeded size before re rendering so we can render the
             // error if the size is exceeded
             saveExceededSizeError(nettyRequest, request, response);
-            ActionInvoker.invoke(request, response);
+            ActionInvoker.invoke(request, response);//调用controller方法
         }
 
         @Override

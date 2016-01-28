@@ -271,9 +271,9 @@ public class Invoker {
             }
             try {
                 preInit();
-                if (init()) {
+                if (init()) {//重新编译类到二进制码
                     before();
-                    execute();
+                    execute();//反射执行方法
                     after();
                     onSuccess();
                 }

@@ -2,6 +2,7 @@ package play.classloading;
 
 import javassist.ClassPool;
 import javassist.CtClass;
+import org.junit.Test;
 import play.Logger;
 import play.Play;
 import play.PlayPlugin;
@@ -143,7 +144,7 @@ public class ApplicationClasses {
     /**
      * Represent a application class
      */
-    public static class ApplicationClass {
+    public static class ApplicationClass {//每个应用类
 
         /**
          * The fully qualified class name
@@ -354,5 +355,9 @@ public class ApplicationClasses {
     @Override
     public String toString() {
         return classes.toString();
+    }
+
+    @Test
+    public static void compileTest(){
     }
 }
