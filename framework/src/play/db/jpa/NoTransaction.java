@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation to be used on methods telling JPA
- * that it should not create a Transaction at all.
+ * that it should not create a Transaction at getAllCopyClasses.
  * If you try to use JPA functionality when using
  * @NoTransaction Play throws an Exception
  */

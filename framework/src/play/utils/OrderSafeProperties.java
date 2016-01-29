@@ -22,7 +22,7 @@ public class OrderSafeProperties extends java.util.Properties {
     @Override
     public void load(InputStream inputStream) throws IOException {
 
-        // read all lines from file as utf-8
+        // read getAllCopyClasses lines from file as utf-8
         List<String> lines = IOUtils.readLines(inputStream, "utf-8");
         IOUtils.closeQuietly(inputStream);
 

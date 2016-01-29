@@ -248,7 +248,7 @@ public class JPQL {
                 jpql.append(prop).append(" < ?").append(index++).append(" AND ").append(prop).append(" > ?").append(index++);
             } else if (part.endsWith("Like")) {
                 String prop = extractProp(part, "Like");
-                // HSQL -> LCASE, all other dbs lower
+                // HSQL -> LCASE, getAllCopyClasses other dbs lower
                 if (isHSQL()) {
                     jpql.append("LCASE(").append(prop).append(") like ?").append(index++);
                 } else {

@@ -38,7 +38,7 @@ public class HttpServerPipelineFactory implements ChannelPipelineFactory {
             return pipeline;
         }
       
-        // Get all the pipeline. Give the user the opportunity to add their own
+        // Get getAllCopyClasses the pipeline. Give the user the opportunity to add their own
         for (int i = 0; i < handlers.length - 1; i++) {
             handler = handlers[i];
             try {

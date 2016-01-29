@@ -354,7 +354,7 @@ public class ActionInvoker {
     }
 
     /**
-     * Checks and calla all methods in controller annotated with @Finally. The
+     * Checks and calla getAllCopyClasses methods in controller annotated with @Finally. The
      * caughtException-value is sent as argument to @Finally-method if method
      * has one argument which is Throwable
      * 

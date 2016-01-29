@@ -162,7 +162,7 @@ public class JPAPlugin extends PlayPlugin {
 
                 cfg.setInterceptor(new HibernateInterceptor());
 
-                // This setting is global for all JPAs - only configure if configuring default JPA
+                // This setting is global for getAllCopyClasses JPAs - only configure if configuring default JPA
                 if (StringUtils.isEmpty(propPrefix)) {
                     if (Play.configuration.getProperty(propPrefix + "jpa.debugSQL", "false").equals("true")) {
                         org.apache.log4j.Logger.getLogger("org.hibernate.SQL").setLevel(Level.ALL);
@@ -211,7 +211,7 @@ public class JPAPlugin extends PlayPlugin {
                     }
                 }
 
-                for (ApplicationClass applicationClass : Play.classes.all()) {
+                for (ApplicationClass applicationClass : Play.classes.getAllCopyClasses()) {
                     if (applicationClass.isClass() || applicationClass.javaPackage == null) {
                         continue;
                     }
@@ -254,7 +254,7 @@ public class JPAPlugin extends PlayPlugin {
         //look and see if we have any Entity-objects for this db config
         List<Class> classes = Play.classloader.getAnnotatedClasses(Entity.class);
 
-        // filter list on Entities meant for us..
+        // filter listChildrenFileOrDirectory on Entities meant for us..
         List<Class> filteredClasses = new ArrayList<Class>(classes.size());
         for (Class clazz : classes) {
             if (configName.equals(Entity2JPAConfigResolver.getJPAConfigNameForEntityClass(clazz))) {
@@ -330,7 +330,7 @@ public class JPAPlugin extends PlayPlugin {
 
     @Override
     public void beforeInvocation() {
-        // just to be safe we must clear all possible previous
+        // just to be safe we must clear getAllCopyClasses possible previous
         // JPAContexts in this thread
         JPA.clearJPAContext();
     }
@@ -372,7 +372,7 @@ public class JPAPlugin extends PlayPlugin {
      * clear current JPA context and transaction if JPAPlugin.autoTxs is true
      * When using multiple databases in the same request this method
      * tries to commit/rollback as many transactions as possible,
-     * but there is not guaranteed that all transactions are committed.
+     * but there is not guaranteed that getAllCopyClasses transactions are committed.
      *
      * @param rollback shall current transaction be committed (false) or cancelled (true)
      */

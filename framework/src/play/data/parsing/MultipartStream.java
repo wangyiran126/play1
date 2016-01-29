@@ -574,7 +574,7 @@ public class MultipartStream {
         System.arraycopy(boundary, 2, boundary, 0, boundary.length - 2);
         boundaryLength = boundary.length - 2;
         try {
-            // Discard all data up to the delimiter.
+            // Discard getAllCopyClasses data up to the delimiter.
             discardBodyData();
 
             // Read boundary - if succeded, the stream contains an

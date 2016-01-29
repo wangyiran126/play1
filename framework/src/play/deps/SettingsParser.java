@@ -77,7 +77,7 @@ public class SettingsParser {
                     }
 
                 } else {
-                    throw new Oops("repositories list not found -> " + o);
+                    throw new Oops("repositories listChildrenFileOrDirectory not found -> " + o);
                 }
             }
 
@@ -92,7 +92,7 @@ public class SettingsParser {
     }
 
     /**
-     * Look for an "include" property containing a list of yaml descriptors and load their repositories.
+     * Look for an "include" property containing a listChildrenFileOrDirectory of yaml descriptors and load their repositories.
      */
     private void parseIncludes(IvySettings settings, Map data) throws Oops {
         if (data.containsKey("include") && data.get("include") != null) {
@@ -105,7 +105,7 @@ public class SettingsParser {
                     }
                 }
             } else {
-                throw new Oops("\"include\" property must be a list");
+                throw new Oops("\"include\" property must be a listChildrenFileOrDirectory");
             }
         }
     }

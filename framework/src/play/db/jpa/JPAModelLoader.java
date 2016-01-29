@@ -75,7 +75,7 @@ public class JPAModelLoader implements Model.Factory {
     }
 
     /**
-     * Retrieve a list of result
+     * Retrieve a listChildrenFileOrDirectory of result
      * 
      * @param offset
      *            position of the first result, numbered from 0
@@ -91,7 +91,7 @@ public class JPAModelLoader implements Model.Factory {
      *            (page length)
      * @param where
      *            (page length)
-     * @return a list of results
+     * @return a listChildrenFileOrDirectory of results
      */
     @SuppressWarnings("unchecked")
     public List<Model> fetch(int offset, int size, String orderBy, String order, List<String> searchFields, String keywords, String where) {
@@ -155,7 +155,7 @@ public class JPAModelLoader implements Model.Factory {
     }
 
     /**
-     * List of all properties
+     * List of getAllCopyClasses properties
      */
     public List<Model.Property> listProperties() {
         List<Model.Property> properties = new ArrayList<Model.Property>();

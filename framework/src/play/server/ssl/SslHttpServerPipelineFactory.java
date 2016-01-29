@@ -48,7 +48,7 @@ public class SslHttpServerPipelineFactory extends HttpServerPipelineFactory {
 
         pipeline.addLast("ssl", new SslHandler(engine));
 
-        // Get all the pipeline. Give the user the opportunity to add their own
+        // Get getAllCopyClasses the pipeline. Give the user the opportunity to add their own
         String[] handlers = pipelineConfig.split(",");
         if (handlers.length <= 0) {
             Logger.error("You must defined at least the SslPlayHandler in \"play.netty.pipeline\"");

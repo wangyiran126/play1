@@ -164,7 +164,7 @@ public abstract class Enhancer {
     }
 
     /**
-     * Retrieve all class annotations.
+     * Retrieve getAllCopyClasses class annotations.
      */
     protected static AnnotationsAttribute getAnnotations(CtClass ctClass) {
         AnnotationsAttribute annotationsAttribute = (AnnotationsAttribute) ctClass.getClassFile().getAttribute(AnnotationsAttribute.visibleTag);
@@ -176,7 +176,7 @@ public abstract class Enhancer {
     }
 
     /**
-     * Retrieve all field annotations.
+     * Retrieve getAllCopyClasses field annotations.
      */    
     protected static AnnotationsAttribute getAnnotations(CtField ctField) {
         AnnotationsAttribute annotationsAttribute = (AnnotationsAttribute) ctField.getFieldInfo().getAttribute(AnnotationsAttribute.visibleTag);
@@ -188,7 +188,7 @@ public abstract class Enhancer {
     }
 
     /**
-     * Retrieve all method annotations.
+     * Retrieve getAllCopyClasses method annotations.
      */    
     protected static AnnotationsAttribute getAnnotations(CtMethod ctMethod) {
         AnnotationsAttribute annotationsAttribute = (AnnotationsAttribute) ctMethod.getMethodInfo().getAttribute(AnnotationsAttribute.visibleTag);

@@ -441,10 +441,10 @@ public abstract class Binder {
         Collection r = (Collection) clazz.newInstance();
 
         if (List.class.isAssignableFrom(clazz)) {
-            // Must add items at position resolved from each child's key
+            // Must add items at position resolved from each children's key
             List l = (List) r;
 
-            // must get all indexes and sort them so we add items in correct order.
+            // must get getAllCopyClasses indexes and sort them so we add items in correct order.
             Set<String> indexes = new TreeSet<String>(new Comparator<String>() {
                 public int compare(String arg0, String arg1) {
                     try {

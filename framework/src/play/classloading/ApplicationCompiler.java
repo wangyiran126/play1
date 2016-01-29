@@ -22,7 +22,6 @@ import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
 import org.eclipse.jdt.internal.compiler.problem.DefaultProblemFactory;
 import org.eclipse.jdt.internal.compiler.Compiler;
 
-import org.junit.Test;
 import play.Logger;
 import play.Play;
 import play.classloading.ApplicationClasses.ApplicationClass;
@@ -108,7 +107,7 @@ public class ApplicationCompiler {
         }
 
         public char[] getContents() {
-            return applicationClasses.getApplicationClass(clazzName).javaSource.toCharArray();
+            return applicationClasses.getApplicationClass(clazzName).javaSourceString.toCharArray();
         }
 
         public char[] getMainTypeName() {
@@ -257,7 +256,7 @@ public class ApplicationCompiler {
                         throw new CompilationException(Play.classes.getApplicationClass(className).javaFile, message, problem.getSourceLineNumber(), problem.getSourceStart(), problem.getSourceEnd());
                     }
                 }
-                // Something has been compiled
+                // Something has been compileToBytesAndModifyDate
                 ClassFile[] clazzFiles = result.getClassFiles();
                 for (int i = 0; i < clazzFiles.length; i++) {
                     final ClassFile clazzFile = clazzFiles[i];
@@ -274,7 +273,7 @@ public class ApplicationCompiler {
                         Logger.trace("Compiled %s", clazzName);
                     }
 
-                    applicationClasses.getApplicationClass(clazzName.toString()).compiled(clazzFile.getBytes());
+                    applicationClasses.getApplicationClass(clazzName.toString()).compileToBytesAndModifyDate(clazzFile.getBytes());
                 }
             }
         };

@@ -14,10 +14,10 @@ public abstract class JPAConfigurationExtension {
 
     /**
      * Override this method in order to restrict the extension to a specific db configuration.
-     * By default, this method returns <code>null</code> and hence applies to all {@link JPAConfigurationExtension}-s.
+     * By default, this method returns <code>null</code> and hence applies to getAllCopyClasses {@link JPAConfigurationExtension}-s.
      *
      * @return the db config name as in the properties file this extension should provide to,
-     *         <code>null</code> if it should apply to all database configurations.
+     *         <code>null</code> if it should apply to getAllCopyClasses database configurations.
      */
     public String getConfigurationName() {
         return null;

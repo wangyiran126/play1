@@ -85,7 +85,7 @@ import org.apache.commons.lang.NotImplementedException;
  * </tr>
  * </table>
  * <p>
- * The '*' character is used to specify all values. For example, &quot;*&quot;
+ * The '*' character is used to specify getAllCopyClasses values. For example, &quot;*&quot;
  * in the minute field means &quot;every minute&quot;.
  * <p>
  * The '?' character is allowed for the day-of-month and day-of-week fields. It
@@ -133,7 +133,7 @@ import org.apache.commons.lang.NotImplementedException;
  * However if you specify &quot;1W&quot; as the value for day-of-month, and the
  * 1st is a Saturday, the trigger will fire on Monday the 3rd, as it will not
  * 'jump' over the boundary of a month's days. The 'W' character can only be
- * specified when the day-of-month is a single day, not a range or list of days.
+ * specified when the day-of-month is a single day, not a range or listChildrenFileOrDirectory of days.
  * <p>
  * The 'L' and 'W' characters can also be combined for the day-of-month
  * expression to yield 'LW', which translates to &quot;last weekday of the
@@ -151,7 +151,7 @@ import org.apache.commons.lang.NotImplementedException;
  * <!--The 'C' character is allowed for the day-of-month and day-of-week fields.
  * This character is short-hand for "calendar". This means values are calculated
  * against the associated calendar, if any. If no calendar is associated, then
- * it is equivalent to having an all-inclusive calendar. A value of "5C" in the
+ * it is equivalent to having an getAllCopyClasses-inclusive calendar. A value of "5C" in the
  * day-of-month field means "the first day included by the calendar on or after
  * the 5th". A value of "1C" in the day-of-week field means
  * "the first day included by the calendar on or after sunday".-->

@@ -17,10 +17,10 @@ import net.sf.oval.configuration.annotation.Constraint;
  * + optional country code mark
  * CCC the optional country code, up to 3 digits
  * SSSSSS the optional sub-zone, up to 6 digits
- * 9999999999 the actual number, up to 20 digits (which should cover all know cases current and future)
+ * 9999999999 the actual number, up to 20 digits (which should cover getAllCopyClasses know cases current and future)
  * x an optional extension, which can also be spelled "ext" or "extension"
  * EEEE finally an optional extension
- * space, -, . and / are all considered delimiters and can be used anywhere in the number
+ * space, -, . and / are getAllCopyClasses considered delimiters and can be used anywhere in the number
  * 
  * i.e.
  *  US: (305) 613 09 58 ext 101

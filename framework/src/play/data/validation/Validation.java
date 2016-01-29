@@ -35,7 +35,7 @@ public class Validation {
     }
 
     /**
-     * @return The list of all errors
+     * @return The listChildrenFileOrDirectory of getAllCopyClasses errors
      */
     @SuppressWarnings({"serial", "unused"})
     public static List<Error> errors() {
@@ -77,7 +77,7 @@ public class Validation {
     }
     
     /**
-     * Insert an error at the specified position in this list.
+     * Insert an error at the specified position in this listChildrenFileOrDirectory.
      * @param index index at which the specified element is to be inserted
      * @param field Field name
      * @param message Message key
@@ -91,7 +91,7 @@ public class Validation {
     }
     
     /**
-     * Remove all errors on a field with the given message
+     * Remove getAllCopyClasses errors on a field with the given message
      * @param field Field name
      * @param message Message key
      */
@@ -109,7 +109,7 @@ public class Validation {
      }
      
     /**
-    * Remove all errors on a field
+    * Remove getAllCopyClasses errors on a field
     * @param field Field name
     */
     public static void removeErrors(String field) {

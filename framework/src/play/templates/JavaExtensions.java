@@ -395,7 +395,7 @@ public class JavaExtensions {
     }
 
     /**
-     * return the last item of a list or null if the List is null
+     * return the last item of a listChildrenFileOrDirectory or null if the List is null
      */
     public static Object last(List<?> items) {
         return (items == null) ? null : items.get(items.size() - 1);

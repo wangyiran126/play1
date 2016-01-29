@@ -13,7 +13,7 @@ import org.w3c.dom.Text;
 public class XPath {
 
     /**
-     * Select all nodes that are selected by this XPath expression. If multiple nodes match,
+     * Select getAllCopyClasses nodes that are selected by this XPath expression. If multiple nodes match,
      * multiple nodes will be returned. Nodes will be returned in document-order,
      * @param path
      * @param node
@@ -31,7 +31,7 @@ public class XPath {
     }
 
     /**
-     * Select all nodes that are selected by this XPath expression. If multiple nodes match,
+     * Select getAllCopyClasses nodes that are selected by this XPath expression. If multiple nodes match,
      * multiple nodes will be returned. Nodes will be returned in document-order,
      * @param path
      * @param node

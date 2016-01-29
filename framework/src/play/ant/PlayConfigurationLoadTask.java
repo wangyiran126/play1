@@ -91,7 +91,7 @@ public class PlayConfigurationLoadTask {
     }
 
     /**
-     * Load all properties from the given conf file, resolving the id
+     * Load getAllCopyClasses properties from the given conf file, resolving the id
      * @param srcFile the conf file
      * @param playId the current id
      * @return a Map of key, values corresponding to the entries in the conf file

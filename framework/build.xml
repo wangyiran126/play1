@@ -244,7 +244,7 @@
         </ant>
     </target>
 
-    <!-- Launch all *Test.java -->
+    <!-- Launch getAllCopyClasses *Test.java -->
 
     <target name="test" depends="clean,jar,build-test-modules" description="run tests suite">
         <condition property="playExtension" value=".bat">

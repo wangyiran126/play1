@@ -282,20 +282,20 @@ public class Java {
     }
 
     /**
-     * Find all annotated method from a class
+     * Find getAllCopyClasses annotated method from a class
      * @param clazz The class
      * @param annotationType The annotation class
-     * @return A list of method object
+     * @return A listChildrenFileOrDirectory of method object
      */
     public static List<Method> findAllAnnotatedMethods(Class<?> clazz, Class<? extends Annotation> annotationType) {
         return getJavaWithCaching().findAllAnnotatedMethods(clazz, annotationType);
     }
 
     /**
-     * Find all annotated method from a class
+     * Find getAllCopyClasses annotated method from a class
      * @param classes The classes
      * @param annotationType The annotation class
-     * @return A list of method object
+     * @return A listChildrenFileOrDirectory of method object
      */
     public static List<Method> findAllAnnotatedMethods(List<Class> classes, Class<? extends Annotation> annotationType) {
         List<Method> methods = new ArrayList<Method>();
@@ -452,7 +452,7 @@ public class Java {
  * It contains functionality with caching..
  *
  * The idea is that the Java-objects creates a new instance of JavaWithCaching,
- * each time something new is compiled..
+ * each time something new is compileToBytesAndModifyDate..
  *
  */
 class JavaWithCaching {
@@ -498,10 +498,10 @@ class JavaWithCaching {
     private final Map<Class<?>, List<Method>> class2AllMethodsWithAnnotations = new HashMap<Class<?>, List<Method>>();
 
     /**
-     * Find all annotated method from a class
+     * Find getAllCopyClasses annotated method from a class
      * @param clazz The class
      * @param annotationType The annotation class
-     * @return A list of method object
+     * @return A listChildrenFileOrDirectory of method object
      */
     public List<Method> findAllAnnotatedMethods(Class<?> clazz, final Class<? extends Annotation> annotationType) {
 
@@ -523,7 +523,7 @@ class JavaWithCaching {
             // have to resolve it.
             methods = new ArrayList<Method>();
 
-            // get list of all annotated methods on this class..
+            // get listChildrenFileOrDirectory of getAllCopyClasses annotated methods on this class..
             for( Method method : findAllAnnotatedMethods( clazz)) {
                 if (method.isAnnotationPresent(annotationType)) {
                     methods.add(method);
@@ -562,9 +562,9 @@ class JavaWithCaching {
     }
 
     /**
-     * Find all annotated method from a class
+     * Find getAllCopyClasses annotated method from a class
      * @param clazz The class
-     * @return A list of method object
+     * @return A listChildrenFileOrDirectory of method object
      */
     public List<Method> findAllAnnotatedMethods(Class<?> clazz) {
         synchronized( classAndAnnotationsLock ) {

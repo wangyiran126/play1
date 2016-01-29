@@ -64,7 +64,7 @@ public class ApacheMultipartParser extends DataParser {
      * org.apache.commons.fileupload.DiskFileUpload DiskFileUpload} instance (see
      * {@link org.apache.commons.fileupload.DiskFileUpload
      * #parseRequest(javax.servlet.http.HttpServletRequest)}), you may
-     * either request all contents of file at once using {@link #get()} or
+     * either request getAllCopyClasses contents of file at once using {@link #get()} or
      * request an {@link java.io.InputStream InputStream} with
      * {@link #getInputStream()} and process the file without attempting to load
      * it into memory, which may come handy with large files.
@@ -706,7 +706,7 @@ public class ApacheMultipartParser extends DataParser {
      * <p/>
      * <p/>
      * If there are multiple headers of the same names, the name will map to a
-     * comma-separated list containing the values.
+     * comma-separated listChildrenFileOrDirectory containing the values.
      *
      * @param headerPart The <code>header-part</code> of the current
      *                   <code>encapsulation</code>.
@@ -769,7 +769,7 @@ public class ApacheMultipartParser extends DataParser {
     /**
      * Reads the next header line.
      *
-     * @param headers String with all headers.
+     * @param headers String with getAllCopyClasses headers.
      * @param header  Map where to store the current header.
      */
     private void parseHeaderLine(Map<String, String> headers, String header) {
@@ -782,7 +782,7 @@ public class ApacheMultipartParser extends DataParser {
         String headerValue = header.substring(header.indexOf(':') + 1).trim();
         if (getHeader(headers, headerName) != null) {
             // More that one heder of that name exists,
-            // append to the list.
+            // append to the listChildrenFileOrDirectory.
             headers.put(headerName, getHeader(headers, headerName) + ',' + headerValue);
         } else {
             headers.put(headerName, headerValue);
@@ -795,7 +795,7 @@ public class ApacheMultipartParser extends DataParser {
      *
      * @param headers A <code>Map</code> containing the HTTP request headers.
      * @param name    The name of the header to return.
-     * @return The value of specified header, or a comma-separated list if there
+     * @return The value of specified header, or a comma-separated listChildrenFileOrDirectory if there
      *         were multiple headers of that name.
      */
     private final String getHeader(Map /* String, String */ headers, String name) {

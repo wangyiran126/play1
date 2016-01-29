@@ -29,7 +29,7 @@ import static org.apache.commons.io.IOUtils.closeQuietly;
 
 /**
  * The application classLoader. 
- * Load the classes from the application Java sources files.
+ * Load the cacheOfApplicationClass from the application Java sources files.
  */
 public class ApplicationClassloader extends ClassLoader {
 
@@ -43,14 +43,14 @@ public class ApplicationClassloader extends ClassLoader {
     public ApplicationClassloaderState currentState = new ApplicationClassloaderState();
 
     /**
-     * This protection domain applies to all loaded classes.
+     * This protection domain applies to getAllCopyClasses loaded cacheOfApplicationClass.
      */
     public ProtectionDomain protectionDomain;
 
     public ApplicationClassloader() {
         super(ApplicationClassloader.class.getClassLoader());
-        // Clean the existing classes
-        for (ApplicationClass applicationClass : Play.classes.all()) {
+        // Clean the existing cacheOfApplicationClass
+        for (ApplicationClass applicationClass : Play.classes.getAllCopyClasses()) {
             applicationClass.uncompile();//清除每个类
         }
         pathHash = computePathHash();
@@ -129,10 +129,10 @@ public class ApplicationClassloader extends ClassLoader {
         long start = System.currentTimeMillis();
         ApplicationClass applicationClass = Play.classes.getApplicationClass(name);
         if (applicationClass != null) {
-            if (applicationClass.isDefinable()) {
+            if (applicationClass.haveCompiled()) {
                 return applicationClass.javaClass;
             }
-            byte[] bc = BytecodeCache.getBytecode(name, applicationClass.javaSource);
+            byte[] bc = BytecodeCache.getBytecode(name, applicationClass.javaSourceString);
 
             if (Logger.isTraceEnabled()) {
                 Logger.trace("Compiling code for %s", name);
@@ -150,17 +150,17 @@ public class ApplicationClassloader extends ClassLoader {
                 if (!applicationClass.isClass()) {
                     applicationClass.javaPackage = applicationClass.javaClass.getPackage();
                 }
-
-                if (Logger.isTraceEnabled()) {
-                    Logger.trace("%sms to load class %s from cache", System.currentTimeMillis() - start, name);
-                }
+//
+//                if (Logger.isTraceEnabled()) {
+//                    Logger.trace("%sms to load class %s from cache", System.currentTimeMillis() - start, name);
+//                }
 
                 return applicationClass.javaClass;
             }
             if (applicationClass.javaByteCode != null || applicationClass.compile() != null) {
                 applicationClass.enhance();
                 applicationClass.javaClass = defineClass(applicationClass.name, applicationClass.enhancedByteCode, 0, applicationClass.enhancedByteCode.length, protectionDomain);
-                BytecodeCache.cacheBytecode(applicationClass.enhancedByteCode, name, applicationClass.javaSource);
+                BytecodeCache.cacheBytecode(applicationClass.enhancedByteCode, name, applicationClass.javaSourceString);
                 resolveClass(applicationClass.javaClass);
                 if (!applicationClass.isClass()) {
                     applicationClass.javaPackage = applicationClass.javaClass.getPackage();
@@ -172,7 +172,7 @@ public class ApplicationClassloader extends ClassLoader {
 
                 return applicationClass.javaClass;
             }
-            Play.classes.classes.remove(name);
+            Play.classes.cacheOfApplicationClass.remove(name);
         }
         return null;
     }
@@ -225,7 +225,7 @@ public class ApplicationClassloader extends ClassLoader {
     @Override
     public InputStream getResourceAsStream(String name) {
         for (VirtualFile vf : Play.javaPath) {
-            VirtualFile res = vf.child(name);
+            VirtualFile res = vf.children(name);
             if (res != null && res.exists()) {
                 return res.inputstream();
             }
@@ -251,7 +251,7 @@ public class ApplicationClassloader extends ClassLoader {
     @Override
     public URL getResource(String name) {
         for (VirtualFile vf : Play.javaPath) {
-            VirtualFile res = vf.child(name);
+            VirtualFile res = vf.children(name);
             if (res != null && res.exists()) {
                 try {
                     return res.getRealFile().toURI().toURL();
@@ -270,7 +270,7 @@ public class ApplicationClassloader extends ClassLoader {
     public Enumeration<URL> getResources(String name) throws IOException {
         List<URL> urls = new ArrayList<URL>();
         for (VirtualFile vf : Play.javaPath) {
-            VirtualFile res = vf.child(name);
+            VirtualFile res = vf.children(name);
             if (res != null && res.exists()) {
                 try {
                     urls.add(res.getRealFile().toURI().toURL());
@@ -305,9 +305,9 @@ public class ApplicationClassloader extends ClassLoader {
     public void detectChanges() {
         // Now check for file modification
         List<ApplicationClass> modifieds = new ArrayList<ApplicationClass>();
-        for (ApplicationClass applicationClass : Play.classes.all()) {
+        for (ApplicationClass applicationClass : Play.classes.getAllCopyClasses()) {
             if (applicationClass.timestamp < applicationClass.javaFile.lastModified()) {
-                applicationClass.refresh();
+                applicationClass.clearFileByteAndTime();
                 modifieds.add(applicationClass);
             }
         }
@@ -320,7 +320,7 @@ public class ApplicationClassloader extends ClassLoader {
         boolean dirtySig = false;
         for (ApplicationClass applicationClass : modifiedWithDependencies) {
             if (applicationClass.compile() == null) {
-                Play.classes.classes.remove(applicationClass.name);
+                Play.classes.cacheOfApplicationClass.remove(applicationClass.name);
                 currentState = new ApplicationClassloaderState();//show others that we have changed..
             } else {
                 int sigChecksum = applicationClass.sigChecksum;
@@ -328,7 +328,7 @@ public class ApplicationClassloader extends ClassLoader {
                 if (sigChecksum != applicationClass.sigChecksum) {
                     dirtySig = true;
                 }
-                BytecodeCache.cacheBytecode(applicationClass.enhancedByteCode, applicationClass.name, applicationClass.javaSource);
+                BytecodeCache.cacheBytecode(applicationClass.enhancedByteCode, applicationClass.name, applicationClass.javaSourceString);
                 newDefinitions.add(new ClassDefinition(applicationClass.javaClass, applicationClass.enhancedByteCode));
                 currentState = new ApplicationClassloaderState();//show others that we have changed..
             }
@@ -350,23 +350,23 @@ public class ApplicationClassloader extends ClassLoader {
             throw new RuntimeException("Signature change !");
         }
 
-        // Now check if there is new classes or removed classes
+        // Now check if there is new cacheOfApplicationClass or removed cacheOfApplicationClass
         int hash = computePathHash();
         if (hash != this.pathHash) {
             // Remove class for deleted files !!
-            for (ApplicationClass applicationClass : Play.classes.all()) {
+            for (ApplicationClass applicationClass : Play.classes.getAllCopyClasses()) {
                 if (!applicationClass.javaFile.exists()) {
-                    Play.classes.classes.remove(applicationClass.name);
+                    Play.classes.cacheOfApplicationClass.remove(applicationClass.name);
                     currentState = new ApplicationClassloaderState();//show others that we have changed..
                 }
                 if (applicationClass.name.contains("$")) {
-                    Play.classes.classes.remove(applicationClass.name);
+                    Play.classes.cacheOfApplicationClass.remove(applicationClass.name);
                     currentState = new ApplicationClassloaderState();//show others that we have changed..
-                    // Ok we have to remove all classes from the same file ...
+                    // Ok we have to remove getAllCopyClasses cacheOfApplicationClass from the same file ...
                     VirtualFile vf = applicationClass.javaFile;
-                    for (ApplicationClass ac : Play.classes.all()) {
+                    for (ApplicationClass ac : Play.classes.getAllCopyClasses()) {
                         if (ac.javaFile.equals(vf)) {
-                            Play.classes.classes.remove(ac.name);
+                            Play.classes.cacheOfApplicationClass.remove(ac.name);
                         }
                     }
                 }
@@ -384,8 +384,8 @@ public class ApplicationClassloader extends ClassLoader {
     }
 
     /**
-     * Try to load all .java files found.
-     * @return The list of well defined Class
+     * Try to load getAllCopyClasses .java files found.
+     * @return The listChildrenFileOrDirectory of well defined Class
      */
     public List<Class> getAllClasses() {
         if (allClasses == null) {
@@ -406,26 +406,20 @@ public class ApplicationClassloader extends ClassLoader {
 
             } else {
 
-                if (!Play.pluginCollection.compileSources()) {
+                if (!havePluginCanCompile()) {//可以用插件编译类
 
                     List<ApplicationClass> all = new ArrayList<ApplicationClass>();
 
-                    for (VirtualFile virtualFile : Play.javaPath) {
-                        all.addAll(getAllClasses(virtualFile));
+                    for (VirtualFile virtualDirectory : Play.javaPath) {
+                        all.addAll(getAllApplicationClass(virtualDirectory));
                     }
-                    List<String> classNames = new ArrayList<String>();
-                    for (int i = 0; i < all.size(); i++) {
-                        ApplicationClass applicationClass = all.get(i);
-                        if (applicationClass != null && !applicationClass.compiled && applicationClass.isClass()) {
-                            classNames.add(all.get(i).name);
-                        }
-                    }
+                    List<String> classNames = getUncompliedClassName(all);
 
                     Play.classes.compiler.compile(classNames.toArray(new String[classNames.size()]));//把类编译成二进制码,使jvm可以被理解
 
                 }
 
-                for (ApplicationClass applicationClass : Play.classes.all()) {
+                for (ApplicationClass applicationClass : Play.classes.getAllCopyClasses()) {
                     Class clazz = loadApplicationClass(applicationClass.name);
                     if (clazz != null) {
                         allClasses.add(clazz);
@@ -442,12 +436,28 @@ public class ApplicationClassloader extends ClassLoader {
         }
         return allClasses;
     }
+
+    private List<String> getUncompliedClassName(List<ApplicationClass> all) {
+        List<String> classNames = new ArrayList<String>();
+        for (int i = 0; i < all.size(); i++) {
+            ApplicationClass applicationClass = all.get(i);
+            if (applicationClass != null && !applicationClass.compiled && applicationClass.isClass()) {
+                classNames.add(all.get(i).name);
+            }
+        }
+        return classNames;
+    }
+
+    private boolean havePluginCanCompile() {
+        return Play.pluginCollection.compileSources();
+    }
+
     List<Class> allClasses = null;//载入的java类,可以利用反射获取方法等
 
     /**
-     * Retrieve all application classes assignable to this class.
+     * Retrieve getAllCopyClasses application cacheOfApplicationClass assignable to this class.
      * @param clazz The superclass, or the interface.
-     * @return A list of class
+     * @return A listChildrenFileOrDirectory of class
      */
     public List<Class> getAssignableClasses(Class clazz) {
         getAllClasses();
@@ -465,7 +475,7 @@ public class ApplicationClassloader extends ClassLoader {
      */
     public Class getClassIgnoreCase(String name) {
         getAllClasses();
-        for (ApplicationClass c : Play.classes.all()) {
+        for (ApplicationClass c : Play.classes.getAllCopyClasses()) {
             if (c.name.equalsIgnoreCase(name) || c.name.replace("$", ".").equalsIgnoreCase(name)) {
                 if (Play.usePrecompiled) {
                     return c.javaClass;
@@ -477,9 +487,9 @@ public class ApplicationClassloader extends ClassLoader {
     }
 
     /**
-     * Retrieve all application classes with a specific annotation.
+     * Retrieve getAllCopyClasses application cacheOfApplicationClass with a specific annotation.
      * @param clazz The annotation class.
-     * @return A list of class
+     * @return A listChildrenFileOrDirectory of class
      */
     public List<Class> getAnnotatedClasses(Class<? extends Annotation> clazz) {
         getAllClasses();
@@ -507,7 +517,7 @@ public class ApplicationClassloader extends ClassLoader {
         return res;
     }
 
-    List<ApplicationClass> getAllClasses(VirtualFile path) {
+    List<ApplicationClass> getAllApplicationClass(VirtualFile path) {
         return getAllClasses(path, "");
     }
 
@@ -516,21 +526,27 @@ public class ApplicationClassloader extends ClassLoader {
             basePackage += ".";
         }
         List<ApplicationClass> res = new ArrayList<ApplicationClass>();
-        for (VirtualFile virtualFile : path.list()) {
-            scan(res, basePackage, virtualFile);
+        for (VirtualFile virtualFile : path.listChildrenFileOrDirectory()) {
+            addClassOfDirectoryAndSubDirectory(res, basePackage, virtualFile);
         }
         return res;
     }
 
-    void scan(List<ApplicationClass> classes, String packageName, VirtualFile current) {
+    /**
+     * 添加文件夹和子文件夹里面的类
+     * @param classes
+     * @param packageName
+     * @param current
+     */
+    void addClassOfDirectoryAndSubDirectory(List<ApplicationClass> classes, String packageName, VirtualFile current) {
         if (!current.isDirectory()) {
             if (current.getName().endsWith(".java") && !current.getName().startsWith(".")) {
                 String classname = packageName + current.getName().substring(0, current.getName().length() - 5);
-                classes.add(Play.classes.getApplicationClass(classname));
+                classes.add(Play.classes.getApplicationClass(classname));//获取应用类创建或者重用
             }
         } else {
-            for (VirtualFile virtualFile : current.list()) {
-                scan(classes, packageName + current.getName() + ".", virtualFile);
+            for (VirtualFile virtualFile : current.listChildrenFileOrDirectory()) {
+                addClassOfDirectoryAndSubDirectory(classes, packageName + current.getName() + ".", virtualFile);
             }
         }
     }
@@ -542,7 +558,7 @@ public class ApplicationClassloader extends ClassLoader {
                 classes.add(new ApplicationClass(classname));
             }
         } else {
-            for (VirtualFile virtualFile : current.list()) {
+            for (VirtualFile virtualFile : current.listChildrenFileOrDirectory()) {
                 scanPrecompiled(classes, packageName + current.getName() + ".", virtualFile);
             }
         }

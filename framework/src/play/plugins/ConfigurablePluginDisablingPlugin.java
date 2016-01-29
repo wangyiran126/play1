@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Plugin that reads list of plugins to disable from application.conf
+ * Plugin that reads listChildrenFileOrDirectory of plugins to disable from application.conf
  *
  *
  * To disable plugins, specify it like this in application.conf:
@@ -23,7 +23,7 @@ import java.util.Set;
 public class ConfigurablePluginDisablingPlugin extends PlayPlugin {
 
     /**
-     * List holding all disabled plugins.
+     * List holding getAllCopyClasses disabled plugins.
      * when reloading config, we have to enable hem again, in case,
      * they are no longer listed in the "disable plugins"-section
      */
@@ -66,7 +66,7 @@ public class ConfigurablePluginDisablingPlugin extends PlayPlugin {
         }
 
         //must look for plugins disabled the last time but not this time.. This can happen
-        //when reloading config with changes in disable-list...
+        //when reloading config with changes in disable-listChildrenFileOrDirectory...
 
         for( String pluginClassName : previousDisabledPlugins ){
             if( !disabledPlugins.contains( pluginClassName)){

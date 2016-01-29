@@ -133,7 +133,7 @@ public class WSAsync implements WSImpl {
             // different encoding we have configured AHC to use raw urls. When using raw urls,
             // AHC does not encode url and QueryParam with utf-8 - but there is another problem:
             // If we send raw (none-encoded) url (with queryString) to AHC, it does not url-encode it,
-            // but transform all illegal chars to '?'.
+            // but transform getAllCopyClasses illegal chars to '?'.
             // If we pre-encoded the url with QueryString before sending it to AHC, ahc will decode it, and then
             // later break it with '?'.
 

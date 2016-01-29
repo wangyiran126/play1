@@ -5,7 +5,7 @@ import play.Play;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * The super class for all Play! exceptions
+ * The super class for getAllCopyClasses Play! exceptions
  */
 public abstract class PlayException extends RuntimeException {
 

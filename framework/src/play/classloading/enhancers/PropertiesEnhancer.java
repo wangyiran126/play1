@@ -131,7 +131,7 @@ public class PropertiesEnhancer extends Enhancer {
             throw new UnexpectedException("Error in PropertiesEnhancer", e);
         }
 
-        // Intercept all fields access
+        // Intercept getAllCopyClasses fields access
         for (final CtBehavior ctMethod : ctClass.getDeclaredBehaviors()) {
             ctMethod.instrument(new ExprEditor() {
 

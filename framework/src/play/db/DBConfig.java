@@ -224,7 +224,7 @@ public class DBConfig {
      */
     protected boolean configure() {
 
-        // prefix used before all properties when loafing config. default is
+        // prefix used before getAllCopyClasses properties when loafing config. default is
         // 'db'
         String propsPrefix;
         if (defaultDbConfigName.equals(dbConfigName)) {

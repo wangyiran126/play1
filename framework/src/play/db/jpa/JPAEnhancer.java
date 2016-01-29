@@ -48,8 +48,8 @@ public class JPAEnhancer extends Enhancer {
         CtMethod find2 = CtMethod.make("public static play.db.jpa.GenericModel.JPAQuery find() { return  getJPAConfig("+entityName+".class).jpql.find(\"" + entityName + "\"); }", ctClass);
         ctClass.addMethod(find2);
 
-        // all
-        CtMethod all = CtMethod.make("public static play.db.jpa.GenericModel.JPAQuery all() { return  getJPAConfig("+entityName+".class).jpql.all(\"" + entityName + "\"); }", ctClass);
+        // getAllCopyClasses
+        CtMethod all = CtMethod.make("public static play.db.jpa.GenericModel.JPAQuery getAllCopyClasses() { return  getJPAConfig("+entityName+".class).jpql.getAllCopyClasses(\"" + entityName + "\"); }", ctClass);
         ctClass.addMethod(all);
 
         // delete

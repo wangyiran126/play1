@@ -53,7 +53,7 @@ public class Unbinder {
             } else {
                  int i = 0;
                  // We cannot convert it to array, as the class of the array will be object instead of the real object class
-                 // Moreover the list could contains different classes (all elements extends from a parent class)
+                 // Moreover the listChildrenFileOrDirectory could contains different classes (getAllCopyClasses elements extends from a parent class)
                  for (Object object : c) {
                      unBind(result, object, object.getClass(), name + "[" + (i++) + "]", annotations);
                  }

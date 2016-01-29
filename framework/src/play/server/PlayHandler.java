@@ -161,6 +161,8 @@ public class PlayHandler extends SimpleChannelUpstreamHandler {
                 // thread.
                 Http.Request.current.set(new Http.Request());
 
+                Request request1 = Http.Request.current.get();
+
                 final Response response = new Response();
                 Http.Response.current.set(response);
 
@@ -297,6 +299,7 @@ public class PlayHandler extends SimpleChannelUpstreamHandler {
         @Override
         public void run() {
             try {
+                Http.Request.current.get();
                 if (Logger.isTraceEnabled()) {
                     Logger.trace("run: begin");
                 }
@@ -900,7 +903,7 @@ public class PlayHandler extends SimpleChannelUpstreamHandler {
         try {
             VirtualFile file = Play.getVirtualFile(renderStatic.file);
             if (file != null && file.exists() && file.isDirectory()) {
-                file = file.child("index.html");
+                file = file.children("index.html");
                 if (file != null) {
                     renderStatic.file = file.relativePath();
                 }

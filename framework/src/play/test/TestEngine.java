@@ -3,8 +3,6 @@ package play.test;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,8 +18,6 @@ import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
-import org.junit.runner.notification.RunNotifier;
-import org.junit.runners.model.TestClass;
 
 import play.Logger;
 import play.Play;
@@ -237,7 +233,7 @@ public class TestEngine {
             for (StackTraceElement stackTraceElement : failure.getException().getStackTrace()) {
                 if (stackTraceElement.getClassName().equals(className)) {
                     current.sourceInfos = "In " + Play.classes.getApplicationClass(className).javaFile.relativePath() + ", line " + stackTraceElement.getLineNumber();
-                    current.sourceCode = Play.classes.getApplicationClass(className).javaSource.split("\n")[stackTraceElement.getLineNumber() - 1];
+                    current.sourceCode = Play.classes.getApplicationClass(className).javaSourceString.split("\n")[stackTraceElement.getLineNumber() - 1];
                     current.sourceFile = Play.classes.getApplicationClass(className).javaFile.relativePath();
                     current.sourceLine = stackTraceElement.getLineNumber();
                 }

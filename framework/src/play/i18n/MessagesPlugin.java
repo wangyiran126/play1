@@ -36,7 +36,7 @@ public class MessagesPlugin extends PlayPlugin {
             Logger.warn("Defaults messsages file missing");
         }
         for (VirtualFile module : Play.modules.values()) {
-            VirtualFile messages = module.child("conf/messages");
+            VirtualFile messages = module.children("conf/messages");
             if (messages != null && messages.exists()
                     && !messages.isDirectory()) {
                 Messages.defaults.putAll(read(messages));
@@ -49,7 +49,7 @@ public class MessagesPlugin extends PlayPlugin {
         for (String locale : Play.langs) {
             Properties properties = new Properties();
             for (VirtualFile module : Play.modules.values()) {
-                VirtualFile messages = module.child("conf/messages." + locale);
+                VirtualFile messages = module.children("conf/messages." + locale);
                 if (messages != null && messages.exists()
                         && !messages.isDirectory()) {
                     properties.putAll(read(messages));
@@ -132,7 +132,7 @@ public class MessagesPlugin extends PlayPlugin {
             return;
         }
         for (VirtualFile module : Play.modules.values()) {
-            vf = module.child("conf/messages");
+            vf = module.children("conf/messages");
             if (vf != null && vf.exists() && !vf.isDirectory()
                     && vf.lastModified() > lastLoading) {
                 onApplicationStart();
@@ -147,7 +147,7 @@ public class MessagesPlugin extends PlayPlugin {
                 return;
             }
             for (VirtualFile module : Play.modules.values()) {
-                vf = module.child("conf/messages." + locale);
+                vf = module.children("conf/messages." + locale);
                 if (vf != null && vf.exists() && !vf.isDirectory()
                         && vf.lastModified() > lastLoading) {
                     onApplicationStart();

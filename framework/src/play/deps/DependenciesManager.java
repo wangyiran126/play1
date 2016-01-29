@@ -158,7 +158,7 @@ public class DependenciesManager {
         return false;
     }
 
-    // Retrieve the list of modules in the order they were defined in the dependencies.yml.
+    // Retrieve the listChildrenFileOrDirectory of modules in the order they were defined in the dependencies.yml.
     public Set<String> retrieveModules() throws Exception {
     	File ivyModule = new File(application, "conf/dependencies.yml");
         if(ivyModule == null || !ivyModule.exists()) {

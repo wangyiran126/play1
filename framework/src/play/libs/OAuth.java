@@ -29,7 +29,7 @@ public class OAuth {
 
     /**
      * Create an OAuth object for the service described in info
-     * @param info must contain all informations related to the service
+     * @param info must contain getAllCopyClasses informations related to the service
      * @return the OAuth object
      */
     public static OAuth service(ServiceInfo info) {

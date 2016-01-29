@@ -25,7 +25,7 @@ public abstract class TemplateCompiler {
     }
 
     public BaseTemplate compile(VirtualFile file) {
-        return compile(new GroovyTemplate(file.relativePath(), file.contentAsString()));
+        return compile(new GroovyTemplate(file.relativePath(), file.fileInputToString()));
     }
 
     protected StringBuilder compiledSource = new StringBuilder();
@@ -108,7 +108,7 @@ public abstract class TemplateCompiler {
         template.compiledSource = compiledSource.toString();
 
         if (Logger.isTraceEnabled()) {
-            Logger.trace("%s is compiled to %s", template.name, template.compiledSource);
+            Logger.trace("%s is compileToBytesAndModifyDate to %s", template.name, template.compiledSource);
         }
 
     }

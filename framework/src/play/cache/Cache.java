@@ -202,7 +202,7 @@ public abstract class Cache {
     }
 
     /**
-     * Clear all data from cache.
+     * Clear getAllCopyClasses data from cache.
      */
     public static void clear() {
         cacheImpl.clear();

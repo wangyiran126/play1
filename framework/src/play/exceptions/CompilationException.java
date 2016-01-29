@@ -36,7 +36,7 @@ public class CompilationException extends PlayException implements SourceAttachm
 
     @Override
     public String getErrorDescription() {
-        return String.format("The file <strong>%s</strong> could not be compiled.\nError raised is : <strong>%s</strong>", isSourceAvailable() ? source.relativePath() : "", problem.toString().replace("<", "&lt;"));
+        return String.format("The file <strong>%s</strong> could not be compileToBytesAndModifyDate.\nError raised is : <strong>%s</strong>", isSourceAvailable() ? source.relativePath() : "", problem.toString().replace("<", "&lt;"));
     }
     
     @Override
@@ -45,7 +45,7 @@ public class CompilationException extends PlayException implements SourceAttachm
     }
 
     public List<String> getSource() {
-        String sourceCode = source.contentAsString();
+        String sourceCode = source.fileInputToString();
         if(start != -1 && end != -1) {
             if(start.equals(end)) {
                 sourceCode = sourceCode.substring(0, start + 1) + "↓" + sourceCode.substring(end + 1);

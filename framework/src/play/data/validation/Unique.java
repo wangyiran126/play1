@@ -9,7 +9,7 @@ import play.db.jpa.GenericModel;
 
 /**
  * Check that a field or or field in a context is unique.
- * You set the context as a list (comma, semicolon or space separated)
+ * You set the context as a listChildrenFileOrDirectory (comma, semicolon or space separated)
  * of properties of your {@link GenericModel}.
  *
  * Message key: validation.unique

@@ -26,7 +26,7 @@ public class TemplateLoader {
     private static Map<String, String> templateFile2UniqueNumber = Collections.synchronizedMap(new HashMap<String, String>());
 
     /**
-     * All loaded templates is cached in the templates-list using a key.
+     * All loaded templates is cached in the templates-listChildrenFileOrDirectory using a key.
      * This key is included as part of the classname for the generated class for a specific template.
      * The key is included in the classname to make it possible to resolve the original template-file
      * from the classname, when creating cleanStackTrace
@@ -40,7 +40,7 @@ public class TemplateLoader {
         //a path cannot be a valid classname so we have to convert it somehow.
         //If we did some encoding on the path, the result would be at least as long as the path.
         //Therefor we assign a unique number to each path the first time we see it, and store it..
-        //This way, all seen paths gets a unique number. This number is our UniqueValidClassnamePart..
+        //This way, getAllCopyClasses seen paths gets a unique number. This number is our UniqueValidClassnamePart..
 
         String uniqueNumber = templateFile2UniqueNumber.get(path);
         if (uniqueNumber == null) {
@@ -77,7 +77,7 @@ public class TemplateLoader {
                     Logger.warn("Precompiled template %s not found, trying to load it dynamically...", file.relativePath());
                 }
             }
-            BaseTemplate template = new GroovyTemplate(fileRelativePath, file.contentAsString());
+            BaseTemplate template = new GroovyTemplate(fileRelativePath, file.fileInputToString());
             if (template.loadFromCache()) {
                 templates.put(key, template);
             } else {
@@ -144,7 +144,7 @@ public class TemplateLoader {
     }
 
     /**
-     * Cleans the cache for all templates
+     * Cleans the cache for getAllCopyClasses templates
      */
     public static void cleanCompiledCache() {
         templates.clear();
@@ -169,7 +169,7 @@ public class TemplateLoader {
             if (vf == null) {
                 continue;
             }
-            VirtualFile tf = vf.child(path);
+            VirtualFile tf = vf.children(path);
             boolean templateExists = tf.exists();
             if (!templateExists && Play.usePrecompiled) {
                 String name = tf.relativePath().replaceAll("\\{(.*)\\}", "from_$1").replace(":", "_").replace("..", "parent");
@@ -183,7 +183,7 @@ public class TemplateLoader {
         /*
         if (template == null) {
         //When using the old 'key = (file.relativePath().hashCode() + "").replace("-", "M");',
-        //the next line never return anything, since all values written to templates is using the
+        //the next line never return anything, since getAllCopyClasses values written to templates is using the
         //above key.
         //when using just file.relativePath() as key, the next line start returning stuff..
         //therefor I have commented it out.
@@ -203,8 +203,8 @@ public class TemplateLoader {
     }
 
     /**
-     * List all found templates
-     * @return A list of executable templates
+     * List getAllCopyClasses found templates
+     * @return A listChildrenFileOrDirectory of executable templates
      */
     public static List<Template> getAllTemplate() {
         List<Template> res = new ArrayList<Template>();
@@ -212,7 +212,7 @@ public class TemplateLoader {
             scan(res, virtualFile);
         }
         for (VirtualFile root : Play.roots) {
-            VirtualFile vf = root.child("conf/routes");
+            VirtualFile vf = root.children("conf/routes");
             if (vf != null && vf.exists()) {
                 Template template = load(vf);
                 if (template != null) {
@@ -240,7 +240,7 @@ public class TemplateLoader {
                 templates.add(template);
             }
         } else if (!current.getName().startsWith(".")) {
-            for (VirtualFile virtualFile : current.list()) {
+            for (VirtualFile virtualFile : current.listChildrenFileOrDirectory()) {
                 scan(templates, virtualFile);
             }
         }

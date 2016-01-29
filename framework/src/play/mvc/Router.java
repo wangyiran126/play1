@@ -49,7 +49,7 @@ public class Router {
      * Parse the routes file. This is called at startup.
      *
      * @param prefix
-     *            The prefix that the path of all routes in this route file
+     *            The prefix that the path of getAllCopyClasses routes in this route file
      *            start with. This prefix should not end with a '/' character.
      */
     public static void load(String prefix) {
@@ -63,7 +63,7 @@ public class Router {
 
     /**
      * This one can be called to add new route. Last added is first in the route
-     * list.
+     * listChildrenFileOrDirectory.
      */
     public static void prependRoute(String method, String path, String action, String headers) {
         prependRoute(method, path, action, null, headers);
@@ -71,7 +71,7 @@ public class Router {
 
     /**
      * This one can be called to add new route. Last added is first in the route
-     * list.
+     * listChildrenFileOrDirectory.
      */
     public static void prependRoute(String method, String path, String action) {
         prependRoute(method, path, action, null, null);
@@ -102,7 +102,7 @@ public class Router {
     }
 
     /**
-     * Add a new route. Will be first in the route list
+     * Add a new route. Will be first in the route listChildrenFileOrDirectory
      */
     public static void addRoute(String method, String path, String action) {
         prependRoute(method, path, action);
@@ -125,7 +125,7 @@ public class Router {
     /**
      * This is used internally when reading the route file. The order the routes
      * are added matters and we want the method to append the routes to the
-     * list.
+     * listChildrenFileOrDirectory.
      */
     public static void appendRoute(String method, String path, String action, String params, String headers, String sourceFile, int line) {
         routes.add(getRoute(method, path, action, params, headers, sourceFile, line));
@@ -152,7 +152,7 @@ public class Router {
     }
 
     /**
-     * Add a new route at the beginning of the route list
+     * Add a new route at the beginning of the route listChildrenFileOrDirectory
      */
     public static void prependRoute(String method, String path, String action, String params, String headers) {
         routes.add(0, getRoute(method, path, action, params, headers));
@@ -165,12 +165,12 @@ public class Router {
      *
      * @param routeFile
      * @param prefix
-     *            The prefix that the path of all routes in this route file
+     *            The prefix that the path of getAllCopyClasses routes in this route file
      *            start with. This prefix should not end with a '/' character.
      */
     static void parse(VirtualFile routeFile, String prefix) {
         String fileAbsolutePath = routeFile.getRealFile().getAbsolutePath();
-        String content = Play.usePrecompiled ? "" : routeFile.contentAsString();
+        String content = Play.usePrecompiled ? "" : routeFile.fileInputToString();
         if (Play.usePrecompiled || content.indexOf("${") > -1 || content.indexOf("#{") > -1 || content.indexOf("%{") > -1) {
             // Mutable map needs to be passed in.
             content = TemplateLoader.load(routeFile).render(new HashMap<String, Object>(16));
@@ -226,7 +226,7 @@ public class Router {
      * if the routes need updated.
      *
      * @param prefix
-     *            The prefix that the path of all routes in this route file
+     *            The prefix that the path of getAllCopyClasses routes in this route file
      *            start with. This prefix should not end with a '/' character.
      */
     public static void detectChanges(String prefix) {

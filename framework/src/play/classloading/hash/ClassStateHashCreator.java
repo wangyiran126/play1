@@ -59,7 +59,7 @@ public class ClassStateHashCreator {
             }
         } else if (!current.getName().startsWith(".")) {
             // TODO: we could later optimizie it further if we check if the entire folder is unchanged
-            for (VirtualFile virtualFile : current.list()) {
+            for (VirtualFile virtualFile : current.listChildrenFileOrDirectory()) {
                 scan(buf, virtualFile);
             }
         }
@@ -80,7 +80,7 @@ public class ClassStateHashCreator {
         // we must re-parse it
 
         StringBuilder buf = new StringBuilder();
-        Matcher matcher = classDefFinderPattern.matcher(current.contentAsString());
+        Matcher matcher = classDefFinderPattern.matcher(current.fileInputToString());
         buf.append(current.getName());
         buf.append("(");
         while (matcher.find()) {

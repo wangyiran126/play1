@@ -1216,7 +1216,7 @@ public class Controller implements ControllerSupport {
     }
 
     /**
-     * Verifies that all application-code is properly enhanched.
+     * Verifies that getAllCopyClasses application-code is properly enhanched.
      * "application code" is the code on the callstack after leaving
      * actionInvoke into the app, and before reentering Controller.await
      */
@@ -1248,7 +1248,7 @@ public class Controller implements ControllerSupport {
                         boolean enhanced = ContinuationEnhancer.isEnhanced(className);
                         if (!enhanced) {
                             throw new ContinuationsException(
-                                    "Cannot use await/continuations when not all application classes on the callstack are properly enhanced. The following class is not enhanced: "
+                                    "Cannot use await/continuations when not getAllCopyClasses application classes on the callstack are properly enhanced. The following class is not enhanced: "
                                             + className);
                         }
                     }

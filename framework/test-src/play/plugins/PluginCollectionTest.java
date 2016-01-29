@@ -39,7 +39,7 @@ public class PluginCollectionTest {
         PluginCollection pc = new PluginCollection();
         pc.loadPlugins();
 
-        //the following plugin-list should match the list in the file 'play.plugins'
+        //the following plugin-listChildrenFileOrDirectory should match the listChildrenFileOrDirectory in the file 'play.plugins'
         assertThat(pc.getEnabledPlugins()).containsExactly(
                 pc.getPluginInstance(CorePlugin.class),
                 pc.getPluginInstance(ConfigurationChangeWatcherPlugin.class),
@@ -96,7 +96,7 @@ public class PluginCollectionTest {
         PlayPlugin corePlugin_first_instance = pc.getPluginInstance(CorePlugin.class);
         PlayPlugin testPlugin_first_instance = pc.getPluginInstance(TestPlugin.class);
 
-        //the following plugin-list should match the list in the file 'play.plugins'
+        //the following plugin-listChildrenFileOrDirectory should match the listChildrenFileOrDirectory in the file 'play.plugins'
         assertThat(pc.getEnabledPlugins()).containsExactly(
                 corePlugin_first_instance,
                 testPlugin_first_instance);
@@ -141,7 +141,7 @@ public class PluginCollectionTest {
 
         assertThat( pc.getEnabledPlugins() ).containsExactly(legacyPlugin);
 
-        //make sure Play.plugins-list is still correct
+        //make sure Play.plugins-listChildrenFileOrDirectory is still correct
         assertThat(Play.plugins).isEqualTo( pc.getEnabledPlugins() );
 
     }
@@ -173,7 +173,7 @@ class LegacyPlugin extends PlayPlugin {
     @SuppressWarnings({"deprecation"})
     @Override
     public void onLoad() {
-        //find TestPlugin in Play.plugins-list and remove it to disable it
+        //find TestPlugin in Play.plugins-listChildrenFileOrDirectory and remove it to disable it
         PlayPlugin pluginToRemove = null;
         for( PlayPlugin pp : Play.plugins){
             if( pp.getClass().equals( TestPlugin.class)){

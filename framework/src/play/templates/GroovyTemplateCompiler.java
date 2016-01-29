@@ -85,7 +85,7 @@ public class GroovyTemplateCompiler extends TemplateCompiler {
         // checking first
         // to try to reduce the number of needed replaceAll-calls.
         // Morten: I have tried to create a single regexp that can be used
-        // instead of all the replaceAll,
+        // instead of getAllCopyClasses the replaceAll,
         // but I failed to do so.. Such a single regexp would be much faster
         // since
         // we then we only would have to have one pass.
@@ -117,7 +117,7 @@ public class GroovyTemplateCompiler extends TemplateCompiler {
 
             // With the current arg0 in replaceAll, it is not possible to do a
             // quick indexOf-check for this one,
-            // so we have to run all the replaceAll-calls
+            // so we have to run getAllCopyClasses the replaceAll-calls
             for (String cName : names) { // dynamic class binding
                 source = source.replaceAll("([^'\".])" + Pattern.quote(cName) + "([.][^'\"])", "$1_('"
                         + originalNames.get(cName).replace("$", "\\$") + "')$2");
@@ -191,7 +191,7 @@ public class GroovyTemplateCompiler extends TemplateCompiler {
                     // #869 If the last char (at endPos-1) is \, we're dealing with escaped char - must include the next one also..
                     if ( text.charAt(endPos-1) == '\\') {
                         // use one more char so the escaping is not broken. Don't have to check length, since
-                        // all '\' is used in escaping, ref replaceAll above..
+                        // getAllCopyClasses '\' is used in escaping, ref replaceAll above..
                         endPos++;
                     }
                 }

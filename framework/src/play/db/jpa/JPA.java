@@ -15,7 +15,7 @@ import play.exceptions.JPAException;
 /**
  * JPA Support
  *
- * This class holds reference to all JPA configurations.
+ * This class holds reference to getAllCopyClasses JPA configurations.
  * Each configuration has its own instance of JPAConfig.
  *
  * dbConfigName corresponds to properties-names in application.conf.

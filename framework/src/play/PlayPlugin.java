@@ -294,7 +294,7 @@ public abstract class PlayPlugin implements Comparable<PlayPlugin> {
 
     /**
      * Let a chance to the plugin to compile it owns classes.
-     * Must be added to the mutable list.
+     * Must be added to the mutable listChildrenFileOrDirectory.
      */
     @Deprecated
     public void compileAll(List<ApplicationClass> classes) {
@@ -367,7 +367,7 @@ public abstract class PlayPlugin implements Comparable<PlayPlugin> {
      * Keep in mind that this method can only add tests to currently loaded ones.
      * You cannot disable tests this way. You should also make sure you do not duplicate already loaded tests.
      * 
-     * @return list of plugin supported unit test classes (empty list in default implementation)
+     * @return listChildrenFileOrDirectory of plugin supported unit test classes (empty listChildrenFileOrDirectory in default implementation)
      */
     public Collection<Class> getUnitTests() {
         return Collections.emptyList();
@@ -383,7 +383,7 @@ public abstract class PlayPlugin implements Comparable<PlayPlugin> {
      * Keep in mind that this method can only add tests to currently loaded ones.
      * You cannot disable tests this way. You should also make sure you do not duplicate already loaded tests.
      *
-     * @return list of plugin supported functional test classes (empty list in default implementation)
+     * @return listChildrenFileOrDirectory of plugin supported functional test classes (empty listChildrenFileOrDirectory in default implementation)
      */
     public Collection<Class> getFunctionalTests() {
         return Collections.emptyList();

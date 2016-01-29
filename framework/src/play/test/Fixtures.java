@@ -17,11 +17,9 @@ import play.data.binding.RootParamNode;
 import play.data.binding.types.DateBinder;
 import play.db.DB;
 import play.db.DBConfig;
-import play.db.DBPlugin;
 import play.db.Model;
 import play.db.SQLSplitter;
 import play.db.jpa.JPAModelLoader;
-import play.db.jpa.JPAPlugin;
 import play.exceptions.DatabaseException;
 import play.exceptions.UnexpectedException;
 import play.exceptions.YAMLException;
@@ -68,12 +66,12 @@ public class Fixtures {
     }
 
     /**
-     * Delete all Model instances for the given types using the underlying persistence mechanisms
+     * Delete getAllCopyClasses Model instances for the given types using the underlying persistence mechanisms
      * @param types Types to delete
      */
     public static void delete(Class<? extends Model>... types) {
         // since we don't know which db(s) we're deleting from,
-        // we just disableForeignKeyConstraints() on all configs
+        // we just disableForeignKeyConstraints() on getAllCopyClasses configs
         for (DBConfig dbConfig : DB.getDBConfigs()) {
             disableForeignKeyConstraints(dbConfig);
         }
@@ -97,7 +95,7 @@ public class Fixtures {
     }
 
     /**
-     * Delete all Model instances for the given types using the underlying persistence mechanisms
+     * Delete getAllCopyClasses Model instances for the given types using the underlying persistence mechanisms
      * @param classes Types to delete
      */
     public static void delete(List<Class<? extends Model>> classes) {
@@ -110,7 +108,7 @@ public class Fixtures {
     }
 
     /**
-     * Delete all Model instances for the all available types using the underlying persistence mechanisms
+     * Delete getAllCopyClasses Model instances for the getAllCopyClasses available types using the underlying persistence mechanisms
      */
     @SuppressWarnings("unchecked")
     public static void deleteAllModels() {
@@ -138,7 +136,7 @@ public class Fixtures {
     static String[] dontDeleteTheseTables = new String[] {"play_evolutions"};
 
     /**
-     * Flush the entire JDBC database for all configured databases.
+     * Flush the entire JDBC database for getAllCopyClasses configured databases.
      */
     public static void deleteDatabase() {
         for ( DBConfig dbConfig : DB.getDBConfigs()) {
@@ -176,7 +174,7 @@ public class Fixtures {
             enableForeignKeyConstraints(dbConfig);
             Play.pluginCollection.afterFixtureLoad();
         } catch (Exception e) {
-            throw new RuntimeException("Cannot delete all table data : " + e.getMessage(), e);
+            throw new RuntimeException("Cannot delete getAllCopyClasses table data : " + e.getMessage(), e);
         }
     }
 
@@ -216,7 +214,7 @@ public class Fixtures {
         VirtualFile yamlFile = null;
         try {
             for (VirtualFile vf : Play.javaPath) {
-                yamlFile = vf.child(name);
+                yamlFile = vf.children(name);
                 // Check that the vf exist and isn't a directory
                 if (yamlFile != null && yamlFile.exists() && !yamlFile.isDirectory()) {
                     break;
@@ -232,7 +230,7 @@ public class Fixtures {
             if(loadAsTemplate){
                 renderedYaml = TemplateLoader.load(yamlFile).render();
             }else{
-                renderedYaml = yamlFile.contentAsString();
+                renderedYaml = yamlFile.fileInputToString();
             }
 
             Yaml yaml = new Yaml();
@@ -405,7 +403,7 @@ public class Fixtures {
         VirtualFile yamlFile = null;
         try {
             for (VirtualFile vf : Play.javaPath) {
-                yamlFile = vf.child(name);
+                yamlFile = vf.children(name);
                 if (yamlFile != null && yamlFile.exists() && !yamlFile.isDirectory()) {
                     break;
                 }
@@ -479,7 +477,7 @@ public class Fixtures {
                 String file = m.group(1);
                 VirtualFile f = Play.getVirtualFile(file);
                 if (f != null && f.exists() && !f.isDirectory()) {
-                    serialized.put(prefix + "." + key.toString(), new String[]{f.contentAsString()});
+                    serialized.put(prefix + "." + key.toString(), new String[]{f.fileInputToString()});
                 }
             } else {
                 serialized.put(prefix + "." + key.toString(), new String[]{value.toString()});
@@ -495,7 +493,7 @@ public class Fixtures {
      */
     static Map<String, String[]> resolveDependencies(Class<Model> type, Map<String, String[]> yml, Map<String, Object> idCache) {
 
-        // Contains all the fields (object properties) we should look up
+        // Contains getAllCopyClasses the fields (object properties) we should look up
         final Set<Field> fields = new HashSet<Field>();
         final Map<String, String[]> resolvedYml = new HashMap<String, String[]>();
         resolvedYml.putAll(yml);
@@ -508,7 +506,7 @@ public class Fixtures {
         }
 
 
-        // Iterate through the Entity property list
+        // Iterate through the Entity property listChildrenFileOrDirectory
         // @Embedded are not managed by the JPA plugin
         // This is not the nicest way of doing things.
          //modelFields =  Model.Manager.factoryFor(type).listProperties();
@@ -610,7 +608,7 @@ public class Fixtures {
                     names.add(name);
                 }
 
-                    // Then we disable all foreign keys
+                    // Then we disable getAllCopyClasses foreign keys
                 Statement exec = connection.createStatement();
                 try {
                     for (String tableName : names)
@@ -668,7 +666,7 @@ public class Fixtures {
             try
             {
                 connect=dbConfig.getConnection();
-                // We must first drop all foreign keys
+                // We must first drop getAllCopyClasses foreign keys
                 ArrayList<String> checkFKCommands=new ArrayList<String>();
                 exec=connect.createStatement();
                 ResultSet rs=exec.executeQuery("SELECT 'ALTER TABLE ' + TABLE_SCHEMA + '.[' + TABLE_NAME +'] WITH CHECK CHECK CONSTRAINT [' + CONSTRAINT_NAME + ']' FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_TYPE = 'FOREIGN KEY'");

@@ -131,7 +131,7 @@ public class Play {
      */
     public static long startedAt;
     /**
-     * The list of supported locales
+     * The listChildrenFileOrDirectory of supported locales
      */
     public static List<String> langs = new ArrayList<String>(16);
     /**
@@ -139,12 +139,12 @@ public class Play {
      */
     public static String secretKey;
     /**
-     * pluginCollection that holds all loaded plugins and all enabled plugins..
+     * pluginCollection that holds getAllCopyClasses loaded plugins and getAllCopyClasses enabled plugins..
      */
     public static PluginCollection pluginCollection = new PluginCollection();
     /**
-     * Readonly list containing currently enabled plugins.
-     * This list is updated from pluginCollection when pluginCollection is modified
+     * Readonly listChildrenFileOrDirectory containing currently enabled plugins.
+     * This listChildrenFileOrDirectory is updated from pluginCollection when pluginCollection is modified
      * Play plugins
      * @deprecated Use pluginCollection instead.
      */
@@ -192,7 +192,7 @@ public class Play {
         Play.started = false;
         Play.applicationPath = root;
 
-        // load all play.static of exists
+        // load getAllCopyClasses play.static of exists
         initStaticStuff();
 
         guessFrameworkPath();
@@ -258,23 +258,8 @@ public class Play {
         // Context path
         ctxPath = configuration.getProperty("http.path", ctxPath);
 
-        // Build basic java source path
-        VirtualFile appRoot = VirtualFile.open(applicationPath);
-        roots.add(appRoot);
-        javaPath = new CopyOnWriteArrayList<VirtualFile>();
-        javaPath.add(appRoot.child("app"));
-        javaPath.add(appRoot.child("conf"));
+        VirtualFile appRoot = createVirtualFile();
 
-        // Build basic templates path
-        if (appRoot.child("app/views").exists() || (usePrecompiled && appRoot.child("precompiled/templates/app/views").exists())) {
-            templatesPath = new ArrayList<VirtualFile>(2);
-            templatesPath.add(appRoot.child("app/views"));
-        } else {
-            templatesPath = new ArrayList<VirtualFile>(1);
-        }
-
-        // Main route file
-        routes = appRoot.child("conf/routes");
 
         // Plugin route files
         modulesRoutes = new HashMap<String, VirtualFile>(16);
@@ -317,6 +302,31 @@ public class Play {
         pluginCollection.onApplicationReady();
 
         Play.initialized = true;
+    }
+
+
+//创建虚拟文件
+    private static VirtualFile createVirtualFile() {
+        // Build basic java source path
+        VirtualFile appRoot = VirtualFile.open(applicationPath);
+        roots.add(appRoot);
+
+
+        javaPath = new CopyOnWriteArrayList<VirtualFile>();
+        javaPath.add(appRoot.children("app"));
+        javaPath.add(appRoot.children("conf"));
+
+        // Build basic templates path
+        if (appRoot.children("app/views").exists() || (usePrecompiled && appRoot.children("precompiled/templates/app/views").exists())) {
+            templatesPath = new ArrayList<VirtualFile>(2);
+            templatesPath.add(appRoot.children("app/views"));
+        } else {
+            templatesPath = new ArrayList<VirtualFile>(1);
+        }
+
+        // Main route file
+        routes = appRoot.children("conf/routes");
+        return appRoot;
     }
 
     public static void guessFrameworkPath() {
@@ -368,7 +378,7 @@ public class Play {
 
         VirtualFile appRoot = VirtualFile.open(applicationPath);
         
-        VirtualFile conf = appRoot.child("conf/" + filename);
+        VirtualFile conf = appRoot.children("conf/" + filename);
         if (confs.contains(conf)) {
             throw new RuntimeException("Detected recursive @include usage. Have seen the file " + filename + " before");
         }
@@ -522,7 +532,7 @@ public class Play {
             }
 
 
-            // Try to load all classes
+            // Try to load getAllCopyClasses classes
             Play.classloader.getAllClasses();//载入类并编译成二进制码
 
             // Routes
@@ -581,7 +591,7 @@ public class Play {
     }
 
     /**
-     * Force all java source and template compilation.
+     * Force getAllCopyClasses java source and template compilation.
      *
      * @return success ?
      */
@@ -642,7 +652,7 @@ public class Play {
         } catch (PlayException e) {
             throw e;
         } catch (Exception e) {
-            // We have to do a clean refresh
+            // We have to do a clean clearFileByteAndTime
             start();
         }
     }
@@ -683,7 +693,7 @@ public class Play {
     }
 
     /**
-     * Load all modules. You can even specify the list using the MODULES
+     * Load getAllCopyClasses modules. You can even specify the listChildrenFileOrDirectory using the MODULES
      * environment variable.
      */
     public static void loadModules() {
@@ -691,11 +701,11 @@ public class Play {
     }
 
     /**
-     * Load all modules.
-     * You can even specify the list using the MODULES environment variable.
+     * Load getAllCopyClasses modules.
+     * You can even specify the listChildrenFileOrDirectory using the MODULES environment variable.
      * @param appRoot : the application path virtual file
      */
-    public static void loadModules(VirtualFile appRoot) {
+    public static void loadModules(VirtualFile appRoot) {//载入modules
         if (System.getenv("MODULES") != null) {
             // Modules path is prepended with a env property
             if (System.getenv("MODULES") != null && System.getenv("MODULES").trim().length() > 0) {
@@ -793,14 +803,14 @@ public class Play {
     public static void addModule(VirtualFile appRoot, String name, File path) {
         VirtualFile root = VirtualFile.open(path);
         modules.put(name, root);
-        if (root.child("app").exists()) {
-            javaPath.add(root.child("app"));
+        if (root.children("app").exists()) {
+            javaPath.add(root.children("app"));
         }
-        if (root.child("app/views").exists() || (usePrecompiled && appRoot.child("precompiled/templates/from_module_" + name + "/app/views").exists())) {
-            templatesPath.add(root.child("app/views"));
+        if (root.children("app/views").exists() || (usePrecompiled && appRoot.children("precompiled/templates/from_module_" + name + "/app/views").exists())) {
+            templatesPath.add(root.children("app/views"));
         }
-        if (root.child("conf/routes").exists() || (usePrecompiled && appRoot.child("precompiled/templates/from_module_" + name + "/conf/routes").exists())) {
-            modulesRoutes.put(name, root.child("conf/routes"));
+        if (root.children("conf/routes").exists() || (usePrecompiled && appRoot.children("precompiled/templates/from_module_" + name + "/conf/routes").exists())) {
+            modulesRoutes.put(name, root.children("conf/routes"));
         }
         roots.add(root);
         if (!name.startsWith("_")) {
@@ -809,7 +819,7 @@ public class Play {
     }
 
     /**
-     * Search a VirtualFile in all loaded applications and plugins
+     * Search a VirtualFile in getAllCopyClasses loaded applications and plugins
      *
      * @param path Relative path from the applications root
      * @return The virtualFile or null

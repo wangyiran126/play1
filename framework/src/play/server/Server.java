@@ -71,7 +71,7 @@ public class Server {
                 bootstrap.setPipelineFactory(new HttpServerPipelineFactory());
 
                 bootstrap.bind(new InetSocketAddress(address, httpPort));
-                bootstrap.setOption("child.tcpNoDelay", true);
+                bootstrap.setOption("children.tcpNoDelay", true);
 
                 if (Play.mode == Mode.DEV) {
                     if (address == null) {
@@ -102,7 +102,7 @@ public class Server {
             if (httpsPort != -1) {
                 bootstrap.setPipelineFactory(new SslHttpServerPipelineFactory());
                 bootstrap.bind(new InetSocketAddress(secureAddress, httpsPort));
-                bootstrap.setOption("child.tcpNoDelay", true);
+                bootstrap.setOption("children.tcpNoDelay", true);
 
                 if (Play.mode == Mode.DEV) {
                     if (secureAddress == null) {

@@ -81,7 +81,7 @@ public class VirtualFile {
         return null;
     }
 
-    public List<VirtualFile> list() {
+    public List<VirtualFile> listChildrenFileOrDirectory() {
         List<VirtualFile> res = new ArrayList<VirtualFile>();
         if (exists()) {
             File[] children = realFile.listFiles();
@@ -149,7 +149,7 @@ public class VirtualFile {
         return realFile.length();
     }
 
-    public VirtualFile child(String name) {
+    public VirtualFile children(String name) {
         return new VirtualFile(new File(realFile, name));
     }
 
@@ -176,7 +176,7 @@ public class VirtualFile {
         return new VirtualFile(file);
     }
 
-    public String contentAsString() {
+    public String fileInputToString() {
         try {
             InputStream is = inputstream();
             try {
@@ -223,8 +223,8 @@ public class VirtualFile {
 
     public static VirtualFile search(Collection<VirtualFile> roots, String path) {
         for (VirtualFile file : roots) {
-            if (file.child(path).exists()) {
-                return file.child(path);
+            if (file.children(path).exists()) {
+                return file.children(path);
             }
         }
         return null;
@@ -238,16 +238,16 @@ public class VirtualFile {
             String path = matcher.group(3);
             String module = matcher.group(2);
             if(module == null || module.equals("?") || module.equals("")) {
-                return new VirtualFile(Play.applicationPath).child(path);
+                return new VirtualFile(Play.applicationPath).children(path);
             } else {
                 if(module.equals("play")) {
-                    return new VirtualFile(Play.frameworkPath).child(path);
+                    return new VirtualFile(Play.frameworkPath).children(path);
                 }
                 if(module.startsWith("module:")){
                     module = module.substring("module:".length());
                     for(Entry<String, VirtualFile> entry : Play.modules.entrySet()) {
                         if(entry.getKey().equals(module))
-                            return entry.getValue().child(path);
+                            return entry.getValue().children(path);
                     }
                 }
             }

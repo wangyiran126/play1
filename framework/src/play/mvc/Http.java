@@ -543,7 +543,7 @@ public class Http {
         /**
          * Return the languages requested by the browser, ordered by preference
          * (preferred first). If no Accept-Language header is present, an empty
-         * list is returned.
+         * listChildrenFileOrDirectory is returned.
          *
          * @return Language codes in order of preference, e.g.
          *         "en-us,en-gb,en,de".
@@ -796,8 +796,8 @@ public class Http {
          * them.
          * 
          * @param allowOrigin
-         *            a comma separated list of domains allowed to perform the
-         *            x-domain call, or "*" for all.
+         *            a comma separated listChildrenFileOrDirectory of domains allowed to perform the
+         *            x-domain call, or "*" for getAllCopyClasses.
          */
         public void accessControl(String allowOrigin) {
             accessControl(allowOrigin, null, false);
@@ -810,8 +810,8 @@ public class Http {
          * them.
          * 
          * @param allowOrigin
-         *            a comma separated list of domains allowed to perform the
-         *            x-domain call, or "*" for all.
+         *            a comma separated listChildrenFileOrDirectory of domains allowed to perform the
+         *            x-domain call, or "*" for getAllCopyClasses.
          * @param allowCredentials
          *            Let the browser send the cookies when doing a x-domain
          *            request. Only respected by the browser if allowOrigin !=
@@ -828,11 +828,11 @@ public class Http {
          * them.
          * 
          * @param allowOrigin
-         *            a comma separated list of domains allowed to perform the
-         *            x-domain call, or "*" for all.
+         *            a comma separated listChildrenFileOrDirectory of domains allowed to perform the
+         *            x-domain call, or "*" for getAllCopyClasses.
          * @param allowMethods
-         *            a comma separated list of HTTP methods allowed, or null
-         *            for all.
+         *            a comma separated listChildrenFileOrDirectory of HTTP methods allowed, or null
+         *            for getAllCopyClasses.
          * @param allowCredentials
          *            Let the browser send the cookies when doing a x-domain
          *            request. Only respected by the browser if allowOrigin !=

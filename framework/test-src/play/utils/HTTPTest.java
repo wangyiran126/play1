@@ -13,7 +13,7 @@ public class HTTPTest {
         assertThat( HTTP.fixCaseForHttpHeader("content-type")).isEqualTo("Content-Type");
         assertThat( HTTP.fixCaseForHttpHeader("Referer")).isEqualTo("Referer");
         assertThat( HTTP.fixCaseForHttpHeader("referer")).isEqualTo("Referer");
-        // An one that is not in the list of valid http headers.
+        // An one that is not in the listChildrenFileOrDirectory of valid http headers.
         String unknown = "Not-In-the-LiST";
         assertThat( HTTP.fixCaseForHttpHeader(unknown)).isEqualTo(unknown);
     }

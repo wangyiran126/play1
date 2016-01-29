@@ -240,7 +240,7 @@ public class GroovyTemplate extends BaseTemplate {
 
         if (!args.containsKey("out")) {
             // This is the first template being rendered.
-            // We have to set up the PrintWriter that this (and all sub-templates) are going
+            // We have to set up the PrintWriter that this (and getAllCopyClasses sub-templates) are going
             // to write the output to..
             applyLayouts = true;
             layout.set(null);
@@ -403,7 +403,7 @@ public class GroovyTemplate extends BaseTemplate {
             args.put("messages", getBinding().getVariables().get("messages"));
             args.put("out", getBinding().getVariable("out"));
             args.put("_attrs", attrs);
-            // all other vars are template-specific
+            // getAllCopyClasses other vars are template-specific
             args.put("_caller", getBinding().getVariables());
             if (attrs != null) {
                 for (Map.Entry<String, Object> entry : attrs.entrySet()) {

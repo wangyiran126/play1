@@ -24,9 +24,9 @@ public class TemplateNotFoundException extends PlayException implements SourceAt
     public TemplateNotFoundException(String path, ApplicationClass applicationClass, Integer line) {
         this(path);
         //This occurs with using property -Dprecompiled=true and no file is found
-        if (applicationClass != null && applicationClass.javaFile != null && applicationClass.javaSource  != null) {
+        if (applicationClass != null && applicationClass.javaFile != null && applicationClass.javaSourceString != null) {
             this.sourceFile = applicationClass.javaFile.relativePath();
-            this.source = Arrays.asList(applicationClass.javaSource.split("\n"));
+            this.source = Arrays.asList(applicationClass.javaSourceString.split("\n"));
         }
         else {
             this.sourceFile = "{unknown source file.  appclass=" + applicationClass + "}";

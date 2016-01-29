@@ -172,7 +172,7 @@ public class Messages {
     }
 
     /**
-     * return all messages for a locale
+     * return getAllCopyClasses messages for a locale
      * @param locale the locale code eg. fr, fr_FR
      * @return messages as a {@link java.util.Properties java.util.Properties}
      */

@@ -196,8 +196,8 @@ public class Evolutions extends PlayPlugin {
             if (Play.modules.containsKey(specificModule)) {
                 VirtualFile moduleRoot = Play.modules.get(specificModule);
                 
-                if(!isModuleEvolutionDisabled(specificModule) && moduleRoot.child("db/evolutions").exists()) {
-                    modulesWithEvolutions.put(specificModule, moduleRoot.child("db/evolutions"));
+                if(!isModuleEvolutionDisabled(specificModule) && moduleRoot.children("db/evolutions").exists()) {
+                    modulesWithEvolutions.put(specificModule, moduleRoot.children("db/evolutions"));
                 } else {
                     System.out.println("~ '" + specificModule + "' module doesn't have any evolutions scripts in it or evolutions are disabled.");
 	            System.out.println("~");
@@ -219,9 +219,9 @@ public class Evolutions extends PlayPlugin {
         /** Check that evolutions are enabled **/
         if(!isModuleEvolutionDisabled()){
             for(Entry<String, VirtualFile> moduleRoot : Play.modules.entrySet()) {
-                if(moduleRoot.getValue().child("db/evolutions").exists()) {
+                if(moduleRoot.getValue().children("db/evolutions").exists()) {
                     if(!isModuleEvolutionDisabled(moduleRoot.getKey())){
-                        modulesWithEvolutions.put(moduleRoot.getKey(), moduleRoot.getValue().child("db/evolutions"));
+                        modulesWithEvolutions.put(moduleRoot.getKey(), moduleRoot.getValue().children("db/evolutions"));
                     } else {
                         System.out.println("~ '" + moduleRoot.getKey() + "' module evolutions are disabled.");
                     }

@@ -182,7 +182,7 @@ public class YamlParser extends AbstractModuleDescriptorParser {
                             if (!m.matches()) {
                                 throw new Oops("Unknown dependency format -> " + depName);
                             } else if( m.groupCount() >= 3 && m.group(3).trim().equals("->")){
-                                throw new Oops("Missing revision in dependency format (use \"latest.integration\" to  matches all versions) -> " + depName);
+                                throw new Oops("Missing revision in dependency format (use \"latest.integration\" to  matches getAllCopyClasses versions) -> " + depName);
                             }
                         }
                         HashMap extraAttributesMap = null;
@@ -250,7 +250,7 @@ public class YamlParser extends AbstractModuleDescriptorParser {
                     }
 
                 } else {
-                    throw new Oops("require list not found -> " + o);
+                    throw new Oops("require listChildrenFileOrDirectory not found -> " + o);
                 }
             }
 

@@ -34,7 +34,7 @@ public class YAMLException extends PlayException implements SourceAttachment {
     }
 
     public List<String> getSource() {
-        return Arrays.asList(yaml.contentAsString().split("\n"));
+        return Arrays.asList(yaml.fileInputToString().split("\n"));
     }
 
     public String getSourceFile() {

@@ -97,7 +97,7 @@ public class DBPlugin extends PlayPlugin {
      * Looks for extra db configs in config.
      *
      * Properties starting with 'db_'
-     * @return list of all extra db config names found
+     * @return listChildrenFileOrDirectory of getAllCopyClasses extra db config names found
      */
     protected Set<String> detectedExtraDBConfigs(Properties props) {
         Set<String> names = new LinkedHashSet<String>(0); //preserve order

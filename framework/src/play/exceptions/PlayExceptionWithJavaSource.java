@@ -42,7 +42,7 @@ public abstract class PlayExceptionWithJavaSource extends PlayException implemen
 
     @Override
     public List<String> getSource() {
-        return isSourceAvailable() ? asList(applicationClass.javaSource.split("\n")) : Collections.<String>emptyList();
+        return isSourceAvailable() ? asList(applicationClass.javaSourceString.split("\n")) : Collections.<String>emptyList();
     }
 
     @Override
@@ -52,6 +52,6 @@ public abstract class PlayExceptionWithJavaSource extends PlayException implemen
 
     @Override
     public boolean isSourceAvailable() {
-        return applicationClass != null && applicationClass.javaSource != null;
+        return applicationClass != null && applicationClass.javaSourceString != null;
     }
 }

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Application classes container.
+ * Application cacheOfApplicationClass container.
  */
 public class ApplicationClasses {
 
@@ -29,15 +29,15 @@ public class ApplicationClasses {
      */
     ApplicationCompiler compiler = new ApplicationCompiler(this);
     /**
-     * Cache of all compiled classes
+     * Cache of getAllCopyClasses compileToBytesAndModifyDate cacheOfApplicationClass
      */
-    Map<String, ApplicationClass> classes = new HashMap<String, ApplicationClass>();
+    Map<String, ApplicationClass> cacheOfApplicationClass = new HashMap<String, ApplicationClass>();
 
     /**
-     * Clear the classes cache
+     * Clear the cacheOfApplicationClass cache
      */
     public void clear() {
-        classes = new HashMap<String, ApplicationClass>();
+        cacheOfApplicationClass = new HashMap<String, ApplicationClass>();
     }
 
     /**
@@ -46,25 +46,25 @@ public class ApplicationClasses {
      * @return The ApplicationClass or null
      */
     public ApplicationClass getApplicationClass(String name) {
-        VirtualFile javaFile = getJava(name);
+        VirtualFile javaFile = getJavaFile(name);
         if(javaFile != null){
-            if (!classes.containsKey(name)) {
-                classes.put(name, new ApplicationClass(name));
+            if (!cacheOfApplicationClass.containsKey(name)) {
+                cacheOfApplicationClass.put(name, new ApplicationClass(name));
             }
-            return classes.get(name);
+            return cacheOfApplicationClass.get(name);
         }
         return null;
     }
 
     /**
-     * Retrieve all application classes assignable to this class.
+     * Retrieve getAllCopyClasses application cacheOfApplicationClass assignable to this class.
      * @param clazz The superclass, or the interface.
-     * @return A list of application classes.
+     * @return A listChildrenFileOrDirectory of application cacheOfApplicationClass.
      */
     public List<ApplicationClass> getAssignableClasses(Class<?> clazz) {
         List<ApplicationClass> results = new ArrayList<ApplicationClass>();
         if (clazz != null) {
-            for (ApplicationClass applicationClass : new ArrayList<ApplicationClass>(classes.values())) {
+            for (ApplicationClass applicationClass : new ArrayList<ApplicationClass>(cacheOfApplicationClass.values())) {
                 if (!applicationClass.isClass()) {
                     continue;
                 }
@@ -85,13 +85,13 @@ public class ApplicationClasses {
     }
 
     /**
-     * Retrieve all application classes with a specific annotation.
+     * Retrieve getAllCopyClasses application cacheOfApplicationClass with a specific annotation.
      * @param clazz The annotation class.
-     * @return A list of application classes.
+     * @return A listChildrenFileOrDirectory of application cacheOfApplicationClass.
      */
     public List<ApplicationClass> getAnnotatedClasses(Class<? extends Annotation> clazz) {
         List<ApplicationClass> results = new ArrayList<ApplicationClass>();
-        for (ApplicationClass applicationClass : classes.values()) {
+        for (ApplicationClass applicationClass : cacheOfApplicationClass.values()) {
             if (!applicationClass.isClass()) {
                 continue;
             }
@@ -108,29 +108,29 @@ public class ApplicationClasses {
     }
 
     /**
-     * All loaded classes.
-     * @return All loaded classes
+     * All loaded cacheOfApplicationClass.
+     * @return All loaded cacheOfApplicationClass
      */
-    public List<ApplicationClass> all() {
-        return new ArrayList<ApplicationClass>(classes.values());
+    public List<ApplicationClass> getAllCopyClasses() {
+        return new ArrayList<ApplicationClass>(cacheOfApplicationClass.values());
     }
 
     /**
      * Put a new class to the cache.
      */
     public void add(ApplicationClass applicationClass) {
-        classes.put(applicationClass.name, applicationClass);
+        cacheOfApplicationClass.put(applicationClass.name, applicationClass);
     }
 
     /**
      * Remove a class from cache
      */
     public void remove(ApplicationClass applicationClass) {
-        classes.remove(applicationClass.name);
+        cacheOfApplicationClass.remove(applicationClass.name);
     }
 
     public void remove(String applicationClass) {
-        classes.remove(applicationClass);
+        cacheOfApplicationClass.remove(applicationClass);
     }
 
     /**
@@ -138,7 +138,7 @@ public class ApplicationClasses {
      * @param name The fully qualified class name
      */
     public boolean hasClass(String name) {
-        return classes.containsKey(name);
+        return cacheOfApplicationClass.containsKey(name);
     }
 
     /**
@@ -157,9 +157,9 @@ public class ApplicationClasses {
         /**
          * The Java source
          */
-        public String javaSource;
+        public String javaSourceString;
         /**
-         * The compiled byteCode
+         * The compileToBytesAndModifyDate byteCode
          */
         public byte[] javaByteCode;
         /**
@@ -175,11 +175,11 @@ public class ApplicationClasses {
          */
         public Package javaPackage;
         /**
-         * Last time than this class was compiled
+         * Last time than this class was compileToBytesAndModifyDate
          */
         public Long timestamp = 0L;
         /**
-         * Is this class compiled
+         * Is this class compileToBytesAndModifyDate
          */
         boolean compiled;
         /**
@@ -192,16 +192,19 @@ public class ApplicationClasses {
 
         public ApplicationClass(String name) {
             this.name = name;
-            this.javaFile = getJava(name);
-            this.refresh();
+            this.javaFile = getJavaFile(name);
+            this.clearFileByteAndTime();
         }
 
         /**
-         * Need to refresh this class !
+         * Need to clearFileByteAndTime this class !
          */
-        public void refresh() {
+        /**
+         * 清空字节和修改时间
+         */
+        public void clearFileByteAndTime() {
             if (this.javaFile != null) {
-                this.javaSource = this.javaFile.contentAsString();
+                this.javaSourceString = this.javaFile.fileInputToString();
             }
             this.javaByteCode = null;
             this.enhancedByteCode = null;
@@ -225,7 +228,7 @@ public class ApplicationClasses {
                 // If a PlayPlugin is present in the application, it is loaded when other plugins are loaded.
                 // All plugins must be loaded before we can start enhancing.
                 // This is a problem when loading PlayPlugins bundled as regular app-class since it uses the same classloader
-                // as the other (soon to be) enhanched play-app-classes.
+                // as the other (soon to be) enhanched play-app-cacheOfApplicationClass.
                 boolean shouldEnhance = true;
                 try {
                     CtClass ctClass = enhanceChecker_classPool.makeClass(new ByteArrayInputStream(this.enhancedByteCode));
@@ -261,10 +264,10 @@ public class ApplicationClasses {
         }
 
         /**
-         * Is this class already compiled but not defined ?
-         * @return if the class is compiled but not defined
+         * Is this class already compileToBytesAndModifyDate but not defined ?
+         * @return if the class is compileToBytesAndModifyDate but not defined
          */
-        public boolean isDefinable() {
+        public boolean haveCompiled() {
             return compiled && javaClass != null;
         }
 
@@ -304,10 +307,11 @@ public class ApplicationClasses {
         }
 
         /**
-         * Call back when a class is compiled.
+         * 编译二进制码并修改文件日期
+         * Call back when a class is compileToBytesAndModifyDate.
          * @param code The bytecode.
          */
-        public void compiled(byte[] code) {
+        public void compileToBytesAndModifyDate(byte[] code) {
             javaByteCode = code;
             enhancedByteCode = code;
             compiled = true;
@@ -316,18 +320,19 @@ public class ApplicationClasses {
 
         @Override
         public String toString() {
-            return name + " (compiled:" + compiled + ")";
+            return name + " (compileToBytesAndModifyDate:" + compiled + ")";
         }
     }
 
     // ~~ Utils
     /**
+     * 获取Java文件 否则返回空
      * Retrieve the corresponding source file for a given class name.
      * It handles innerClass too !
      * @param name The fully qualified class name 
      * @return The virtualFile if found
      */
-    public static VirtualFile getJava(String name) {
+    public static VirtualFile getJavaFile(String name) {
         String fileName = name;
         if (fileName.contains("$")) {
             fileName = fileName.substring(0, fileName.indexOf("$"));
@@ -337,14 +342,14 @@ public class ApplicationClasses {
         fileName = fileOrDir + ".java";
         for (VirtualFile path : Play.javaPath) {
             // 1. check if there is a folder (without extension)
-            VirtualFile javaFile = path.child(fileOrDir);
+            VirtualFile javaFile = path.children(fileOrDir);
                   
             if (javaFile.exists() && javaFile.isDirectory() && javaFile.matchName(fileOrDir)) {
                 // we found a directory (package)
                 return null;
             }
             // 2. check if there is a file
-            javaFile = path.child(fileName);
+            javaFile = path.children(fileName);
             if (javaFile.exists() && javaFile.matchName(fileName)) {
                 return javaFile;
             }
@@ -354,7 +359,7 @@ public class ApplicationClasses {
 
     @Override
     public String toString() {
-        return classes.toString();
+        return cacheOfApplicationClass.toString();
     }
 
     @Test

@@ -69,7 +69,7 @@ public class WS extends PlayPlugin {
     private static WSWithEncoding wsWithDefaultEncoding;
 
     /**
-     * Internal class exposing all the methods previously exposed by WS. This
+     * Internal class exposing getAllCopyClasses the methods previously exposed by WS. This
      * impl has information about encoding. When calling original static methods
      * on WS, then a singleton of WSWithEncoding is called - configured with
      * default encoding. This makes this encoding-enabling backward compatible

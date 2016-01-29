@@ -40,51 +40,51 @@ import java.util.TreeSet;
 
 
 /**
- * Class handling all plugins used by Play.
+ * Class handling getAllCopyClasses plugins used by Play.
  *
  * Loading/reloading/enabling/disabling is handled here.
  *
  * This class also exposes many PlayPlugin-methods which
- * when called, the method is executed on all enabled plugins.
+ * when called, the method is executed on getAllCopyClasses enabled plugins.
  *
- * Since all the enabled-plugins-iteration is done here,
+ * Since getAllCopyClasses the enabled-plugins-iteration is done here,
  * the code elsewhere is cleaner.
  */
 public class PluginCollection {
 
     /**
      * Property holding the name of the play.plugins-resource-name.
-     * Can be modified in unittest to supply modifies plugin-list
+     * Can be modified in unittest to supply modifies plugin-listChildrenFileOrDirectory
      */
     protected String play_plugins_resourceName = "play.plugins";
 
     /**
-     * List that holds all loaded plugins, enabled or disabled
+     * List that holds getAllCopyClasses loaded plugins, enabled or disabled
      */
     protected List<PlayPlugin> allPlugins = new ArrayList<PlayPlugin>();
 
     /**
      * Readonly copy of allPlugins - updated each time allPlugins is updated.
-     * Using this cached copy so we don't have to create it all the time..
+     * Using this cached copy so we don't have to create it getAllCopyClasses the time..
      */
     protected List<PlayPlugin> allPlugins_readOnlyCopy = createReadonlyCopy(allPlugins);
 
     /**
-     * List of all enabled plugins
+     * List of getAllCopyClasses enabled plugins
      */
     protected List<PlayPlugin> enabledPlugins = new ArrayList<PlayPlugin>();
 
     /**
      * Readonly copy of enabledPlugins - updated each time enabledPlugins is updated.
-     * Using this cached copy so we don't have to create it all the time
+     * Using this cached copy so we don't have to create it getAllCopyClasses the time
      */
     protected List<PlayPlugin> enabledPlugins_readOnlyCopy = createReadonlyCopy(enabledPlugins);
 
 
     /**
-     * Using readonly list to crash if someone tries to modify the copy.
+     * Using readonly listChildrenFileOrDirectory to crash if someone tries to modify the copy.
      * @param list
-     * @return Read only list of plugins
+     * @return Read only listChildrenFileOrDirectory of plugins
      */
     protected List<PlayPlugin> createReadonlyCopy( List<PlayPlugin> list ){
         return Collections.unmodifiableList( new ArrayList<PlayPlugin>( list ));
@@ -156,7 +156,7 @@ public class PluginCollection {
             return ;
         }
 
-        // First we build one big SortedSet of all plugins to load (sorted based on index)
+        // First we build one big SortedSet of getAllCopyClasses plugins to load (sorted based on index)
         // This must be done to make sure the enhancing is happening
         // when loading plugins using other classes that must be enhanced.
         // Data structure is a SortedSet instead of a List to avoid including the same class+index twice --
@@ -202,7 +202,7 @@ public class PluginCollection {
                 Logger.error(ex, "Error loading plugin %s", info.toString());
             }
         }
-        // Mow we must call onLoad for all plugins - and we must detect if a plugin
+        // Mow we must call onLoad for getAllCopyClasses plugins - and we must detect if a plugin
         // disables another plugin the old way, by removing it from Play.plugins.
         for (PlayPlugin plugin : getEnabledPlugins()) {
 
@@ -212,13 +212,13 @@ public class PluginCollection {
             }
         }
 
-        // Must update Play.plugins-list one last time
+        // Must update Play.plugins-listChildrenFileOrDirectory one last time
         updatePlayPluginsList();
 
     }
 
     /**
-     * Reloads all loaded plugins that is application-supplied.
+     * Reloads getAllCopyClasses loaded plugins that is application-supplied.
      */
     public void reloadApplicationPlugins() throws Exception{
        
@@ -248,7 +248,7 @@ public class PluginCollection {
             }
         }
 
-        // Now we must call onLoad for all reloaded plugins
+        // Now we must call onLoad for getAllCopyClasses reloaded plugins
         for (PlayPlugin plugin : reloadedPlugins) {
             initializePlugin( plugin );
         }
@@ -263,7 +263,7 @@ public class PluginCollection {
 
 
     /**
-     * Calls plugin.onLoad but detects if plugin removes other plugins from Play.plugins-list to detect
+     * Calls plugin.onLoad but detects if plugin removes other plugins from Play.plugins-listChildrenFileOrDirectory to detect
      * if plugins disables a plugin the old hacked way..
      * @param plugin
      */
@@ -271,7 +271,7 @@ public class PluginCollection {
     protected void initializePlugin(PlayPlugin plugin) {
         Logger.trace("Initializing plugin " + plugin);
         // We're ready to call onLoad for this plugin.
-        // must create a unique Play.plugins-list for this onLoad-method-call so
+        // must create a unique Play.plugins-listChildrenFileOrDirectory for this onLoad-method-call so
         // we can detect if some plugins are removed/disabled
         Play.plugins = new ArrayList<PlayPlugin>(getEnabledPlugins());
         plugin.onLoad();
@@ -391,7 +391,7 @@ public class PluginCollection {
 
 
     /**
-     * Must update Play.plugins-list to be backward compatible
+     * Must update Play.plugins-listChildrenFileOrDirectory to be backward compatible
      */
     @SuppressWarnings({"deprecation"})
     public void updatePlayPluginsList() {
@@ -399,7 +399,7 @@ public class PluginCollection {
     }
 
     /**
-     * Returns new readonly list of all enabled plugins
+     * Returns new readonly listChildrenFileOrDirectory of getAllCopyClasses enabled plugins
      * @return List of plugins
      */
     public List<PlayPlugin> getEnabledPlugins() {
@@ -407,7 +407,7 @@ public class PluginCollection {
     }
     
     /**
-     * Returns readonly view of all enabled plugins in reversed order
+     * Returns readonly view of getAllCopyClasses enabled plugins in reversed order
      * @return Collection of plugins
      */
     public Collection<PlayPlugin> getReversedEnabledPlugins() {
@@ -442,7 +442,7 @@ public class PluginCollection {
     }
 
     /**
-     * Returns new readonly list of all plugins
+     * Returns new readonly listChildrenFileOrDirectory of getAllCopyClasses plugins
      * @return List of plugins
      */
     public List<PlayPlugin> getAllPlugins() {

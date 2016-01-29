@@ -285,7 +285,7 @@ public class GenericModel extends JPABase {
     }
 
     /**
-     * Find all entities of this type
+     * Find getAllCopyClasses entities of this type
      */
     public static <T extends JPABase> List<T> findAll() {
         throw new UnsupportedOperationException("Please annotate your JPA model with @javax.persistence.Entity annotation.");
@@ -311,7 +311,7 @@ public class GenericModel extends JPABase {
     }
 
     /**
-     * Prepare a query to find *all* entities.
+     * Prepare a query to find *getAllCopyClasses* entities.
      * @return A JPAQuery
      */
     public static JPAQuery all() {
@@ -329,7 +329,7 @@ public class GenericModel extends JPABase {
     }
 
     /**
-     * Delete all entities
+     * Delete getAllCopyClasses entities
      * @return Number of entities deleted
      */
     public static int deleteAll() {
@@ -391,8 +391,8 @@ public class GenericModel extends JPABase {
 		}
 
         /**
-         * Retrieve all results of the query
-         * @return A list of entities
+         * Retrieve getAllCopyClasses results of the query
+         * @return A listChildrenFileOrDirectory of entities
          */
         public <T> List<T> fetch() {
             try {
@@ -405,7 +405,7 @@ public class GenericModel extends JPABase {
         /**
          * Retrieve results of the query
          * @param max Max results to fetch
-         * @return A list of entities
+         * @return A listChildrenFileOrDirectory of entities
          */
         public <T> List<T> fetch(int max) {
             try {
@@ -430,7 +430,7 @@ public class GenericModel extends JPABase {
          * Retrieve a page of result
          * @param page Page number (start at 1)
          * @param length (page length)
-         * @return a list of entities
+         * @return a listChildrenFileOrDirectory of entities
          */
         public <T> List<T> fetch(int page, int length) {
             if (page < 1) {

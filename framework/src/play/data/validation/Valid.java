@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 import net.sf.oval.configuration.annotation.Constraint;
 
 /**
- * This bean must satisfy all checks.
+ * This bean must satisfy getAllCopyClasses checks.
  * Message key: validation.object
  * $1: field name
  */

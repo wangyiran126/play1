@@ -256,7 +256,7 @@ public class CorePlugin extends PlayPlugin {
     }
 
     /**
-     * Recursively visit all JVM threads
+     * Recursively visit getAllCopyClasses JVM threads
      */
     static void visit(PrintWriter out, ThreadGroup group, int level) {
         // Get threads in `group'

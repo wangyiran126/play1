@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Database connection utilities.
  *
- * This class holds reference to all DB configurations.
+ * This class holds reference to getAllCopyClasses DB configurations.
  * Each configuration has its own instance of DBConfig.
  *
  * dbConfigName corresponds to properties-names in application.conf.
@@ -38,7 +38,7 @@ public class DB {
 
 
     /**
-     * Sets the new list of db configurations.
+     * Sets the new listChildrenFileOrDirectory of db configurations.
      * Tries to preserve existing config if not changed
      * @param dbConfigNames
      */
@@ -74,7 +74,7 @@ public class DB {
             if (dbConfig != null) {
                 dbConfig.destroy();
             }
-            // remove it from the list
+            // remove it from the listChildrenFileOrDirectory
             dbConfigs.remove(nameToRemove);
         }
     }
@@ -132,12 +132,12 @@ public class DB {
     }
 
     /**
-     * Close all connections opened for the current thread.
+     * Close getAllCopyClasses connections opened for the current thread.
      */
     public static void close() {
         boolean error = false;
         for (DBConfig dbConfig : dbConfigs.values()) {
-            // do our best to close all connections
+            // do our best to close getAllCopyClasses connections
             try {
                 dbConfig.close();
             } catch (Exception e) {
@@ -187,7 +187,7 @@ public class DB {
     }
 
     /**
-     * @return status string for all configured dbConfigs
+     * @return status string for getAllCopyClasses configured dbConfigs
      */
     protected static String getStatus() {
         StringWriter sw = new StringWriter();

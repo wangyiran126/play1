@@ -30,7 +30,7 @@ public class Logger {
      */
     public static boolean forceJuli = false;
     /**
-     * Will redirect all log from java.util.logging to log4j.
+     * Will redirect getAllCopyClasses log from java.util.logging to log4j.
      */
     public static boolean redirectJuli = false;
     /**

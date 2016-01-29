@@ -255,7 +255,7 @@ public class Invoker {
         }
 
         /**
-         * Things to do in all cases after the invocation.
+         * Things to do in getAllCopyClasses cases after the invocation.
          */
         public void _finally() {
             Play.pluginCollection.invocationFinally();
