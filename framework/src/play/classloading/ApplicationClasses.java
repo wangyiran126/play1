@@ -29,7 +29,7 @@ public class ApplicationClasses {
      */
     ApplicationCompiler compiler = new ApplicationCompiler(this);
     /**
-     * Cache of getAllCopyClasses compileToBytesAndModifyDate cacheOfApplicationClass
+     * Cache of getAllCopyClasses compileToBytes cacheOfApplicationClass
      */
     Map<String, ApplicationClass> cacheOfApplicationClass = new HashMap<String, ApplicationClass>();
 
@@ -45,7 +45,7 @@ public class ApplicationClasses {
      * @param name The fully qualified class name
      * @return The ApplicationClass or null
      */
-    public ApplicationClass getApplicationClass(String name) {
+    public ApplicationClass createCacheOfClass(String name) {
         VirtualFile javaFile = getJavaFile(name);
         if(javaFile != null){
             if (!cacheOfApplicationClass.containsKey(name)) {
@@ -159,7 +159,7 @@ public class ApplicationClasses {
          */
         public String javaSourceString;
         /**
-         * The compileToBytesAndModifyDate byteCode
+         * The compileToBytes byteCode
          */
         public byte[] javaByteCode;
         /**
@@ -175,11 +175,11 @@ public class ApplicationClasses {
          */
         public Package javaPackage;
         /**
-         * Last time than this class was compileToBytesAndModifyDate
+         * Last time than this class was compileToBytes
          */
         public Long timestamp = 0L;
         /**
-         * Is this class compileToBytesAndModifyDate
+         * Is this class compileToBytes
          */
         boolean compiled;
         /**
@@ -232,7 +232,7 @@ public class ApplicationClasses {
                 boolean shouldEnhance = true;
                 try {
                     CtClass ctClass = enhanceChecker_classPool.makeClass(new ByteArrayInputStream(this.enhancedByteCode));
-                    if (ctClass.subclassOf(ctPlayPluginClass)) {
+                    if (ctClass.subclassOf(ctPlayPluginClass)) {//如果是ct插件类则不增强该类
                         shouldEnhance = false;
                     }
                 } catch( Exception e) {
@@ -264,8 +264,8 @@ public class ApplicationClasses {
         }
 
         /**
-         * Is this class already compileToBytesAndModifyDate but not defined ?
-         * @return if the class is compileToBytesAndModifyDate but not defined
+         * Is this class already compileToBytes but not defined ?
+         * @return if the class is compileToBytes but not defined
          */
         public boolean haveCompiled() {
             return compiled && javaClass != null;
@@ -290,10 +290,10 @@ public class ApplicationClasses {
          */
         public byte[] compile() {
             long start = System.currentTimeMillis();
-            Play.classes.compiler.compile(new String[]{this.name});
+            Play.classes.compiler.compileToBytes(new String[]{this.name});
 
             if (Logger.isTraceEnabled()) {
-                Logger.trace("%sms to compile class %s", System.currentTimeMillis() - start, name);
+                Logger.trace("%sms to compileToBytes class %s", System.currentTimeMillis() - start, name);
             }
 
             return this.javaByteCode;
@@ -308,10 +308,10 @@ public class ApplicationClasses {
 
         /**
          * 编译二进制码并修改文件日期
-         * Call back when a class is compileToBytesAndModifyDate.
+         * Call back when a class is compileToBytes.
          * @param code The bytecode.
          */
-        public void compileToBytesAndModifyDate(byte[] code) {
+        public void compileToBytes(byte[] code) {
             javaByteCode = code;
             enhancedByteCode = code;
             compiled = true;
@@ -320,7 +320,7 @@ public class ApplicationClasses {
 
         @Override
         public String toString() {
-            return name + " (compileToBytesAndModifyDate:" + compiled + ")";
+            return name + " (compileToBytes:" + compiled + ")";
         }
     }
 

@@ -30,7 +30,7 @@ public abstract class PlayExceptionWithJavaSource extends PlayException implemen
 
         StackTraceElement element = getInterestingStackTraceElement(cause);
         if (element != null) {
-            applicationClass = Play.classes.getApplicationClass(element.getClassName());
+            applicationClass = Play.classes.createCacheOfClass(element.getClassName());
             line = element.getLineNumber();
         }
     }

@@ -34,7 +34,7 @@ public class ControllersEnhancer extends Enhancer {
 
         CtClass ctClass = makeClass(applicationClass);
 
-        if (!ctClass.subtypeOf(classPool.get(ControllerSupport.class.getName()))) {
+        if (!implementsControllerSupport(ctClass)) {
             return;
         }
 
@@ -150,6 +150,10 @@ public class ControllersEnhancer extends Enhancer {
 
         ctClass.defrost();
 
+    }
+
+    private boolean implementsControllerSupport(CtClass ctClass) throws NotFoundException {
+        return ctClass.subtypeOf(classPool.get(ControllerSupport.class.getName()));
     }
 
     /**

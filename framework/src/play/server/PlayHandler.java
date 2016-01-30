@@ -161,8 +161,6 @@ public class PlayHandler extends SimpleChannelUpstreamHandler {
                 // thread.
                 Http.Request.current.set(new Http.Request());
 
-                Request request1 = Http.Request.current.get();
-
                 final Response response = new Response();
                 Http.Response.current.set(response);
 
@@ -299,7 +297,6 @@ public class PlayHandler extends SimpleChannelUpstreamHandler {
         @Override
         public void run() {
             try {
-                Http.Request.current.get();
                 if (Logger.isTraceEnabled()) {
                     Logger.trace("run: begin");
                 }

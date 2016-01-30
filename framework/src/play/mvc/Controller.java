@@ -668,7 +668,7 @@ public class Controller implements ControllerSupport {
         } catch (NoRouteFoundException e) {
             StackTraceElement element = PlayException.getInterestingStackTraceElement(e);
             if (element != null) {
-                throw new NoRouteFoundException(file, Play.classes.getApplicationClass(element.getClassName()), element.getLineNumber());
+                throw new NoRouteFoundException(file, Play.classes.createCacheOfClass(element.getClassName()), element.getLineNumber());
             } else {
                 throw e;
             }
@@ -764,7 +764,7 @@ public class Controller implements ControllerSupport {
             } catch (NoRouteFoundException e) {
                 StackTraceElement element = PlayException.getInterestingStackTraceElement(e);
                 if (element != null) {
-                    throw new NoRouteFoundException(action, newArgs, Play.classes.getApplicationClass(element.getClassName()),
+                    throw new NoRouteFoundException(action, newArgs, Play.classes.createCacheOfClass(element.getClassName()),
                             element.getLineNumber());
                 } else {
                     throw e;
@@ -836,7 +836,7 @@ public class Controller implements ControllerSupport {
             }
             StackTraceElement element = PlayException.getInterestingStackTraceElement(ex);
             if (element != null) {
-                ApplicationClass applicationClass = Play.classes.getApplicationClass(element.getClassName());
+                ApplicationClass applicationClass = Play.classes.createCacheOfClass(element.getClassName());
                 if (applicationClass != null) {
                     throw new TemplateNotFoundException(templateName, applicationClass, element.getLineNumber());
                 }
@@ -1234,7 +1234,7 @@ public class Controller implements ControllerSupport {
                 String className = ste.getClassName();
 
                 if (!haveSeenFirstApplicationClass) {
-                    haveSeenFirstApplicationClass = Play.classes.getApplicationClass(className) != null;
+                    haveSeenFirstApplicationClass = Play.classes.createCacheOfClass(className) != null;
                     // when haveSeenFirstApplicationClass is set to true, we are
                     // entering the user application code..
                 }

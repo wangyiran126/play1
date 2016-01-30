@@ -69,7 +69,7 @@ public abstract class Enhancer {
                     Logger.error("Missing class %s", className);
                 }
             }
-            ApplicationClass appClass = Play.classes.getApplicationClass(className);
+            ApplicationClass appClass = Play.classes.createCacheOfClass(className);
 
             if ( appClass.enhancedByteCode == null) {
                 throw new RuntimeException("Trying to visit uncompiled class while enhancing. Uncompiled class: " + className);
@@ -79,7 +79,7 @@ public abstract class Enhancer {
         }
 
         public URL find(String className) {
-            if (Play.classes.getApplicationClass(className) != null) {
+            if (Play.classes.createCacheOfClass(className) != null) {
                 String cname = className.replace('.', '/') + ".class";
                 try {
                     // return new File(cname).toURL();

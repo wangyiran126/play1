@@ -75,7 +75,7 @@ public class ApplicationClassloader extends ClassLoader {
         }
 
         // First check if it's an application Class
-        Class<?> applicationClass = loadApplicationClass(name);
+        Class<?> applicationClass = loadToClassLoader(name);
         if (applicationClass != null) {
             if (resolve) {
                 resolveClass(applicationClass);
@@ -88,7 +88,7 @@ public class ApplicationClassloader extends ClassLoader {
     }
 
     // ~~~~~~~~~~~~~~~~~~~~~~~
-    public Class<?> loadApplicationClass(String name) {
+    public Class<?> loadToClassLoader(String name) {
 
         if (ApplicationClass.isClass(name)) {
             Class maybeAlreadyLoaded = findLoadedClass(name);
@@ -113,7 +113,7 @@ public class ApplicationClassloader extends ClassLoader {
                     }
                     clazz = defineClass(name, code, 0, code.length, protectionDomain);
                 }
-                ApplicationClass applicationClass = Play.classes.getApplicationClass(name);
+                ApplicationClass applicationClass = Play.classes.createCacheOfClass(name);
                 if (applicationClass != null) {
                     applicationClass.javaClass = clazz;
                     if (!applicationClass.isClass()) {
@@ -127,7 +127,7 @@ public class ApplicationClassloader extends ClassLoader {
         }
 
         long start = System.currentTimeMillis();
-        ApplicationClass applicationClass = Play.classes.getApplicationClass(name);
+        ApplicationClass applicationClass = Play.classes.createCacheOfClass(name);
         if (applicationClass != null) {
             if (applicationClass.haveCompiled()) {
                 return applicationClass.javaClass;
@@ -146,7 +146,7 @@ public class ApplicationClassloader extends ClassLoader {
             if (bc != null) {
                 applicationClass.enhancedByteCode = bc;
                 applicationClass.javaClass = defineClass(applicationClass.name, applicationClass.enhancedByteCode, 0, applicationClass.enhancedByteCode.length, protectionDomain);
-                resolveClass(applicationClass.javaClass);
+                resolveClass(applicationClass.javaClass);//连接类到该类加载器
                 if (!applicationClass.isClass()) {
                     applicationClass.javaPackage = applicationClass.javaClass.getPackage();
                 }
@@ -158,7 +158,7 @@ public class ApplicationClassloader extends ClassLoader {
                 return applicationClass.javaClass;
             }
             if (applicationClass.javaByteCode != null || applicationClass.compile() != null) {
-                applicationClass.enhance();
+                applicationClass.enhance();//加强编译的类
                 applicationClass.javaClass = defineClass(applicationClass.name, applicationClass.enhancedByteCode, 0, applicationClass.enhancedByteCode.length, protectionDomain);
                 BytecodeCache.cacheBytecode(applicationClass.enhancedByteCode, name, applicationClass.javaSourceString);
                 resolveClass(applicationClass.javaClass);
@@ -195,7 +195,7 @@ public class ApplicationClassloader extends ClassLoader {
             className = "package-info";
         }
         if (this.findLoadedClass(className) == null) {
-            this.loadApplicationClass(className);
+            this.loadToClassLoader(className);
         }
     }
 
@@ -387,7 +387,7 @@ public class ApplicationClassloader extends ClassLoader {
      * Try to load getAllCopyClasses .java files found.
      * @return The listChildrenFileOrDirectory of well defined Class
      */
-    public List<Class> getAllClasses() {
+    public List<Class> compileAndLoadClass() {
         if (allClasses == null) {
             allClasses = new ArrayList<Class>();
 
@@ -398,7 +398,7 @@ public class ApplicationClassloader extends ClassLoader {
                 Play.classes.clear();
                 for (ApplicationClass applicationClass : applicationClasses) {
                     Play.classes.add(applicationClass);
-                    Class clazz = loadApplicationClass(applicationClass.name);
+                    Class clazz = loadToClassLoader(applicationClass.name);
                     applicationClass.javaClass = clazz;
                     applicationClass.compiled = true;
                     allClasses.add(clazz);
@@ -406,25 +406,9 @@ public class ApplicationClassloader extends ClassLoader {
 
             } else {
 
-                if (!havePluginCanCompile()) {//可以用插件编译类
+                compile();
 
-                    List<ApplicationClass> all = new ArrayList<ApplicationClass>();
-
-                    for (VirtualFile virtualDirectory : Play.javaPath) {
-                        all.addAll(getAllApplicationClass(virtualDirectory));
-                    }
-                    List<String> classNames = getUncompliedClassName(all);
-
-                    Play.classes.compiler.compile(classNames.toArray(new String[classNames.size()]));//把类编译成二进制码,使jvm可以被理解
-
-                }
-
-                for (ApplicationClass applicationClass : Play.classes.getAllCopyClasses()) {
-                    Class clazz = loadApplicationClass(applicationClass.name);
-                    if (clazz != null) {
-                        allClasses.add(clazz);
-                    }
-                }
+                loadToClassLoader();
 
                 Collections.sort(allClasses, new Comparator<Class>() {
 
@@ -435,6 +419,36 @@ public class ApplicationClassloader extends ClassLoader {
             }
         }
         return allClasses;
+    }
+
+    private void loadToClassLoader() {
+        for (ApplicationClass applicationClass : Play.classes.getAllCopyClasses()) {
+            Class clazz = loadToClassLoader(applicationClass.name);//加载到类编译器并获得该类
+            if (clazz != null) {
+                allClasses.add(clazz);
+            }
+        }
+    }
+
+    private void compile() {
+        if (!havePluginCanCompile()) {//可以用插件编译类
+
+            List<ApplicationClass> all = new ArrayList<ApplicationClass>();
+
+            getAllApplicationClass(all);
+
+            List<String> classNames = getUncompliedClassName(all);
+
+            Play.classes.compiler.compileToBytes(classNames.toArray(new String[classNames.size()]));//把类编译成二进制码,使jvm可以被理解
+
+        }
+    }
+
+    private void getAllApplicationClass(List<ApplicationClass> all) {
+        for (VirtualFile virtualDirectory : Play.javaPath) {
+            all.addAll(getAllClassOfDirectory
+                    (virtualDirectory));
+        }
     }
 
     private List<String> getUncompliedClassName(List<ApplicationClass> all) {
@@ -460,7 +474,7 @@ public class ApplicationClassloader extends ClassLoader {
      * @return A listChildrenFileOrDirectory of class
      */
     public List<Class> getAssignableClasses(Class clazz) {
-        getAllClasses();
+        compileAndLoadClass();
         List<Class> results = new ArrayList<Class>();
         for (ApplicationClass c : Play.classes.getAssignableClasses(clazz)) {
             results.add(c.javaClass);
@@ -474,13 +488,13 @@ public class ApplicationClassloader extends ClassLoader {
      * @return a class
      */
     public Class getClassIgnoreCase(String name) {
-        getAllClasses();
+        compileAndLoadClass();
         for (ApplicationClass c : Play.classes.getAllCopyClasses()) {
             if (c.name.equalsIgnoreCase(name) || c.name.replace("$", ".").equalsIgnoreCase(name)) {
                 if (Play.usePrecompiled) {
                     return c.javaClass;
                 }
-                return loadApplicationClass(c.name);
+                return loadToClassLoader(c.name);
             }
         }
         return null;
@@ -492,7 +506,7 @@ public class ApplicationClassloader extends ClassLoader {
      * @return A listChildrenFileOrDirectory of class
      */
     public List<Class> getAnnotatedClasses(Class<? extends Annotation> clazz) {
-        getAllClasses();
+        compileAndLoadClass();
         List<Class> results = new ArrayList<Class>();
         for (ApplicationClass c : Play.classes.getAnnotatedClasses(clazz)) {
             results.add(c.javaClass);
@@ -517,7 +531,7 @@ public class ApplicationClassloader extends ClassLoader {
         return res;
     }
 
-    List<ApplicationClass> getAllApplicationClass(VirtualFile path) {
+    List<ApplicationClass> getAllClassOfDirectory(VirtualFile path) {
         return getAllClasses(path, "");
     }
 
@@ -542,7 +556,7 @@ public class ApplicationClassloader extends ClassLoader {
         if (!current.isDirectory()) {
             if (current.getName().endsWith(".java") && !current.getName().startsWith(".")) {
                 String classname = packageName + current.getName().substring(0, current.getName().length() - 5);
-                classes.add(Play.classes.getApplicationClass(classname));//获取应用类创建或者重用
+                classes.add(Play.classes.createCacheOfClass(classname));//获取应用类创建或者重用
             }
         } else {
             for (VirtualFile virtualFile : current.listChildrenFileOrDirectory()) {

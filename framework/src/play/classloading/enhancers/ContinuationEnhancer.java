@@ -1,8 +1,5 @@
 package play.classloading.enhancers;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javassist.CannotCompileException;
 import javassist.CtClass;
 import javassist.CtMethod;
@@ -30,7 +27,7 @@ public class ContinuationEnhancer extends Enhancer {
     }
 
     public static boolean isEnhanced(String appClassName) {
-        ApplicationClass appClass = Play.classes.getApplicationClass( appClassName);
+        ApplicationClass appClass = Play.classes.createCacheOfClass( appClassName);
         if ( appClass == null) {
             return false;
         }

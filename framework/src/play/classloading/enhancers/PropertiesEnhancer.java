@@ -15,7 +15,6 @@ import javassist.CtField;
 import javassist.CtMethod;
 import javassist.CtNewConstructor;
 import javassist.NotFoundException;
-import javassist.bytecode.AccessFlag;
 import javassist.expr.ExprEditor;
 import javassist.expr.FieldAccess;
 import play.Logger;
@@ -50,9 +49,8 @@ public class PropertiesEnhancer extends Enhancer {
                     break;
                 }
             }
-            if (!hasDefaultConstructor && !ctClass.isInterface()) {
-                CtConstructor defaultConstructor = CtNewConstructor.make("public " + ctClass.getSimpleName() + "() {}", ctClass);
-                ctClass.addConstructor(defaultConstructor);
+            if (shouldAddConstructor(ctClass, hasDefaultConstructor)) {
+                createDefaultConstructor(ctClass);
             }
         } catch (Exception e) {
             Logger.error(e, "Error in PropertiesEnhancer");
@@ -78,16 +76,11 @@ public class PropertiesEnhancer extends Enhancer {
 
                     try {
                         CtMethod ctMethod = ctClass.getDeclaredMethod(getter);
-                        if (ctMethod.getParameterTypes().length > 0 || Modifier.isStatic(ctMethod.getModifiers())) {
+                        if (notDefaultGetter(ctMethod)) {
                             throw new NotFoundException("it's not a getter !");
                         }
                     } catch (NotFoundException noGetter) {
-
-                        // Getter creation
-                        String code = "public " + ctField.getType().getName() + " " + getter + "() { return this." + ctField.getName() + "; }";
-                        CtMethod getMethod = CtMethod.make(code, ctClass);
-                        ctClass.addMethod(getMethod);
-                        createAnnotation(getAnnotations(getMethod), PlayPropertyAccessor.class);
+                        createGetterMethod(ctClass, ctField, getter);
                     }
 
                     if (!isFinal(ctField)) {
@@ -97,10 +90,7 @@ public class PropertiesEnhancer extends Enhancer {
                                 throw new NotFoundException("it's not a setter !");
                             }
                         } catch (NotFoundException noSetter) {
-                            // Setter creation
-                            CtMethod setMethod = CtMethod.make("public void " + setter + "(" + ctField.getType().getName() + " value) { this." + ctField.getName() + " = value; }", ctClass);
-                            ctClass.addMethod(setMethod);
-                            createAnnotation(getAnnotations(setMethod), PlayPropertyAccessor.class);
+                            createSetterMethod(ctClass, ctField, setter);
                         }
                     }
 
@@ -185,6 +175,34 @@ public class PropertiesEnhancer extends Enhancer {
         // Done.
         applicationClass.enhancedByteCode = ctClass.toBytecode();
         ctClass.defrost();
+    }
+
+    private void createSetterMethod(CtClass ctClass, CtField ctField, String setter) throws CannotCompileException, NotFoundException {
+        // Setter creation
+        CtMethod setMethod = CtMethod.make("public void " + setter + "(" + ctField.getType().getName() + " value) { this." + ctField.getName() + " = value; }", ctClass);
+        ctClass.addMethod(setMethod);
+        createAnnotation(getAnnotations(setMethod), PlayPropertyAccessor.class);
+    }
+
+    private void createGetterMethod(CtClass ctClass, CtField ctField, String getter) throws NotFoundException, CannotCompileException {
+        // Getter creation
+        String code = "public " + ctField.getType().getName() + " " + getter + "() { return this." + ctField.getName() + "; }";
+        CtMethod getMethod = CtMethod.make(code, ctClass);
+        ctClass.addMethod(getMethod);
+        createAnnotation(getAnnotations(getMethod), PlayPropertyAccessor.class);
+    }
+
+    private boolean notDefaultGetter(CtMethod ctMethod) throws NotFoundException {
+        return ctMethod.getParameterTypes().length > 0 || Modifier.isStatic(ctMethod.getModifiers());
+    }
+
+    private boolean shouldAddConstructor(CtClass ctClass, boolean hasDefaultConstructor) {
+        return !hasDefaultConstructor && !ctClass.isInterface();
+    }
+
+    private void createDefaultConstructor(CtClass ctClass) throws CannotCompileException {
+        CtConstructor defaultConstructor = CtNewConstructor.make("public " + ctClass.getSimpleName() + "() {}", ctClass);
+        ctClass.addConstructor(defaultConstructor);
     }
 
     /**

@@ -234,7 +234,7 @@ public class TemplateLoader {
                         Logger.trace("%sms to load %s", System.currentTimeMillis() - start, current.getName());
                     }
                 } catch (TemplateCompilationException e) {
-                    Logger.error("Template %s does not compile at line %d", e.getTemplate().name, e.getLineNumber());
+                    Logger.error("Template %s does not compileToBytes at line %d", e.getTemplate().name, e.getLineNumber());
                     throw e;
                 }
                 templates.add(template);

@@ -102,7 +102,7 @@ public class JobsPlugin extends PlayPlugin {
     @Override
     public void afterApplicationStart() {
         List<Class<?>> jobs = new ArrayList<Class<?>>();
-        for (Class clazz : Play.classloader.getAllClasses()) {
+        for (Class clazz : Play.classloader.compileAndLoadClass()) {
             if (Job.class.isAssignableFrom(clazz)) {
                 jobs.add(clazz);
             }

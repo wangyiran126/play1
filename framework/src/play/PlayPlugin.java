@@ -293,7 +293,7 @@ public abstract class PlayPlugin implements Comparable<PlayPlugin> {
     }
 
     /**
-     * Let a chance to the plugin to compile it owns classes.
+     * Let a chance to the plugin to compileToBytes it owns classes.
      * Must be added to the mutable listChildrenFileOrDirectory.
      */
     @Deprecated

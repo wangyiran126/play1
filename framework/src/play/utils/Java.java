@@ -452,7 +452,7 @@ public class Java {
  * It contains functionality with caching..
  *
  * The idea is that the Java-objects creates a new instance of JavaWithCaching,
- * each time something new is compileToBytesAndModifyDate..
+ * each time something new is compileToBytes..
  *
  */
 class JavaWithCaching {

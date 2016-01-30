@@ -108,7 +108,7 @@ public abstract class TemplateCompiler {
         template.compiledSource = compiledSource.toString();
 
         if (Logger.isTraceEnabled()) {
-            Logger.trace("%s is compileToBytesAndModifyDate to %s", template.name, template.compiledSource);
+            Logger.trace("%s is compileToBytes to %s", template.name, template.compiledSource);
         }
 
     }

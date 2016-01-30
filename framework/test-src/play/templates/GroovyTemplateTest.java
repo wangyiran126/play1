@@ -92,7 +92,7 @@ public class GroovyTemplateTest {
         assertThat( t.render( args ) ).isEqualTo(longString+": Morten");
     }
   
-    // [#107] caused any tag broken with a CR to fail. (It would be compileToBytesAndModifyDate to listChildrenFileOrDirectory arg:items:....).
+    // [#107] caused any tag broken with a CR to fail. (It would be compileToBytes to listChildrenFileOrDirectory arg:items:....).
     @Test
     public void verifyCompilingWithCR() {
         final String source = "#{listChildrenFileOrDirectory items:1..3,\ras:'i'}${i}#{/listChildrenFileOrDirectory}";

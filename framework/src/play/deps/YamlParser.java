@@ -174,10 +174,10 @@ public class YamlParser extends AbstractModuleDescriptorParser {
                             depName = "play -> secure " + System.getProperty("play.version");
                         }
 
-                        // Pattern compile to match [organisation name] - > [artifact] [revision] [classifier]
+                        // Pattern compileToBytes to match [organisation name] - > [artifact] [revision] [classifier]
                         Matcher m = Pattern.compile("([^\\s]+)\\s*[-][>]\\s*([^\\s]+)\\s+([^\\s]+)(\\s+[^\\s]+)?.*").matcher(depName);
                         if (!m.matches()) {
-                         // Pattern compile to match [artifact] [revision] [classifier]
+                         // Pattern compileToBytes to match [artifact] [revision] [classifier]
                             m = Pattern.compile("(([^\\s]+))\\s+([^\\s]+)(\\s+[^\\s]+)?.*").matcher(depName);
                             if (!m.matches()) {
                                 throw new Oops("Unknown dependency format -> " + depName);

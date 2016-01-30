@@ -74,7 +74,7 @@ public class ApplicationCompiler {
     }
 
     /**
-     * Something to compile
+     * Something to compileToBytes
      */
     final class CompilationUnit implements ICompilationUnit {
 
@@ -107,7 +107,7 @@ public class ApplicationCompiler {
         }
 
         public char[] getContents() {
-            return applicationClasses.getApplicationClass(clazzName).javaSourceString.toCharArray();
+            return applicationClasses.createCacheOfClass(clazzName).javaSourceString.toCharArray();
         }
 
         public char[] getMainTypeName() {
@@ -126,10 +126,10 @@ public class ApplicationCompiler {
     }
 
     /**
-     * Please compile this className
+     * Please compileToBytes this className
      */
     @SuppressWarnings("deprecation")
-    public void compile(String[] classNames) {
+    public void compileToBytes(String[] classNames) {
 
         ICompilationUnit[] compilationUnits = new CompilationUnit[classNames.length];
         for (int i = 0; i < classNames.length; i++) {
@@ -177,7 +177,7 @@ public class ApplicationCompiler {
                     }
 
                     char[] fileName = name.toCharArray();
-                    ApplicationClass applicationClass = applicationClasses.getApplicationClass(name);
+                    ApplicationClass applicationClass = applicationClasses.createCacheOfClass(name);
 
                     // ApplicationClass exists
                     if (applicationClass != null) {
@@ -225,7 +225,7 @@ public class ApplicationCompiler {
                     packagesCache.put(name, false);
                     return false;
                 }
-                if (applicationClasses.getApplicationClass(name) != null) {
+                if (applicationClasses.createCacheOfClass(name) != null) {
                     packagesCache.put(name, false);
                     return false;
                 }
@@ -253,10 +253,10 @@ public class ApplicationCompiler {
                             // Non sense !
                             message = problem.getArguments()[0] + " cannot be resolved";
                         }
-                        throw new CompilationException(Play.classes.getApplicationClass(className).javaFile, message, problem.getSourceLineNumber(), problem.getSourceStart(), problem.getSourceEnd());
+                        throw new CompilationException(Play.classes.createCacheOfClass(className).javaFile, message, problem.getSourceLineNumber(), problem.getSourceStart(), problem.getSourceEnd());
                     }
                 }
-                // Something has been compileToBytesAndModifyDate
+                // Something has been compileToBytes
                 ClassFile[] clazzFiles = result.getClassFiles();
                 for (int i = 0; i < clazzFiles.length; i++) {
                     final ClassFile clazzFile = clazzFiles[i];
@@ -273,7 +273,7 @@ public class ApplicationCompiler {
                         Logger.trace("Compiled %s", clazzName);
                     }
 
-                    applicationClasses.getApplicationClass(clazzName.toString()).compileToBytesAndModifyDate(clazzFile.getBytes());
+                    applicationClasses.createCacheOfClass(clazzName.toString()).compileToBytes(clazzFile.getBytes());
                 }
             }
         };

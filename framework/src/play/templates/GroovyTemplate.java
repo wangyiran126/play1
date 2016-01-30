@@ -116,7 +116,7 @@ public class GroovyTemplate extends BaseTemplate {
                 long start = System.currentTimeMillis();
 
                 TClassLoader tClassLoader = new TClassLoader();
-                // Let's compile the groovy source
+                // Let's compileToBytes the groovy source
                 final List<GroovyClass> groovyClassesForThisTemplate = new ArrayList<GroovyClass>();
                 // ~~~ Please !
                 CompilerConfiguration compilerConfiguration = this.setUpCompilerConfiguration();
@@ -167,7 +167,7 @@ public class GroovyTemplate extends BaseTemplate {
                 }
 
                 if (Logger.isTraceEnabled()) {
-                    Logger.trace("%sms to compile template %s to %d classes", System.currentTimeMillis() - start, name, groovyClassesForThisTemplate.size());
+                    Logger.trace("%sms to compileToBytes template %s to %d classes", System.currentTimeMillis() - start, name, groovyClassesForThisTemplate.size());
                 }
 
             } catch (MultipleCompilationErrorsException e) {

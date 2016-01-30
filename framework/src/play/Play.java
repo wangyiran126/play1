@@ -289,7 +289,7 @@ public class Play {
 
         // Done !
         if (mode == Mode.PROD) {
-            if (preCompile() && System.getProperty("precompile") == null) {
+            if (compileAndLoadClass() && System.getProperty("precompile") == null) {
                 start();
             } else {
                 return;
@@ -474,7 +474,7 @@ public class Play {
                     //registers shutdown hook - Now there's a good chance that we can notify
                     //our plugins that we're going down when some calls ctrl+c or just kills our process..
                     shutdownHookEnabled = true;
-                    Runtime.getRuntime().addShutdownHook(new Thread() {
+                    Runtime.getRuntime().addShutdownHook(new Thread() {//当杀死进程的时候,play框架自动关闭插件
                         public void run() {
                             Play.stop();
                         }
@@ -533,7 +533,7 @@ public class Play {
 
 
             // Try to load getAllCopyClasses classes
-            Play.classloader.getAllClasses();//载入类并编译成二进制码
+            Play.classloader.compileAndLoadClass();//载入类并编译成二进制码
 
             // Routes
             Router.detectChanges(ctxPath);
@@ -595,10 +595,10 @@ public class Play {
      *
      * @return success ?
      */
-    static boolean preCompile() {
+    static boolean compileAndLoadClass() {
         if (usePrecompiled) {
             if (Play.getFile("precompiled").exists()) {
-                classloader.getAllClasses();
+                classloader.compileAndLoadClass();
                 Logger.info("Application is precompiled");
                 return true;
             }
@@ -610,7 +610,7 @@ public class Play {
             Logger.info("Precompiling ...");
             Thread.currentThread().setContextClassLoader(Play.classloader);
             long start = System.currentTimeMillis();
-            classloader.getAllClasses();
+            classloader.compileAndLoadClass();
 
             if (Logger.isTraceEnabled()) {
                 Logger.trace("%sms to precompile the Java stuff", System.currentTimeMillis() - start);

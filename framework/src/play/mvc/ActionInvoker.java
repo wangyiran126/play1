@@ -35,7 +35,6 @@ import play.exceptions.ActionNotFoundException;
 import play.exceptions.JavaExecutionException;
 import play.exceptions.PlayException;
 import play.exceptions.UnexpectedException;
-import play.i18n.Lang;
 import play.mvc.Http.Request;
 import play.mvc.Router.Route;
 import play.mvc.results.NoResult;
@@ -228,7 +227,7 @@ public class ActionInvoker {
                 }
                 StackTraceElement element = PlayException.getInterestingStackTraceElement(ex.getTargetException());
                 if (element != null) {
-                    throw new JavaExecutionException(Play.classes.getApplicationClass(element.getClassName()), element.getLineNumber(),
+                    throw new JavaExecutionException(Play.classes.createCacheOfClass(element.getClassName()), element.getLineNumber(),
                             ex.getTargetException());
                 }
                 throw new JavaExecutionException(Http.Request.current().action, ex);
@@ -417,7 +416,7 @@ public class ActionInvoker {
         } catch (InvocationTargetException ex) {
             StackTraceElement element = PlayException.getInterestingStackTraceElement(ex.getTargetException());
             if (element != null) {
-                throw new JavaExecutionException(Play.classes.getApplicationClass(element.getClassName()), element.getLineNumber(),
+                throw new JavaExecutionException(Play.classes.createCacheOfClass(element.getClassName()), element.getLineNumber(),
                         ex.getTargetException());
             }
             throw new JavaExecutionException(Http.Request.current().action, ex);

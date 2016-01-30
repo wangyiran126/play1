@@ -232,9 +232,9 @@ public class TestEngine {
             current.trace = failure.getTrace();
             for (StackTraceElement stackTraceElement : failure.getException().getStackTrace()) {
                 if (stackTraceElement.getClassName().equals(className)) {
-                    current.sourceInfos = "In " + Play.classes.getApplicationClass(className).javaFile.relativePath() + ", line " + stackTraceElement.getLineNumber();
-                    current.sourceCode = Play.classes.getApplicationClass(className).javaSourceString.split("\n")[stackTraceElement.getLineNumber() - 1];
-                    current.sourceFile = Play.classes.getApplicationClass(className).javaFile.relativePath();
+                    current.sourceInfos = "In " + Play.classes.createCacheOfClass(className).javaFile.relativePath() + ", line " + stackTraceElement.getLineNumber();
+                    current.sourceCode = Play.classes.createCacheOfClass(className).javaSourceString.split("\n")[stackTraceElement.getLineNumber() - 1];
+                    current.sourceFile = Play.classes.createCacheOfClass(className).javaFile.relativePath();
                     current.sourceLine = stackTraceElement.getLineNumber();
                 }
             }

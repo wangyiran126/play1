@@ -63,7 +63,7 @@ public class GroovyTemplateCompiler extends TemplateCompiler {
         // Static access
         List<String> names = new ArrayList<String>();
         Map<String, String> originalNames = new HashMap<String, String>();
-        for (Class clazz : Play.classloader.getAllClasses()) {
+        for (Class clazz : Play.classloader.compileAndLoadClass()) {
             if (clazz.getName().endsWith("$")) {
                 String name = clazz.getName().substring(0, clazz.getName().length() - 1).replace('$', '.') + '$';
                 names.add(name);
