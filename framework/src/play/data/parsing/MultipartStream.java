@@ -74,12 +74,12 @@ import org.apache.commons.fileupload.util.Streams;
 public class MultipartStream {
 
     /**
-     * Internal class, which is used to invoke the
+     * Internal class, which is used to createControllerObjectAndInvokeMethod the
      * {@link ProgressListener}.
      */
     static class ProgressNotifier {
 
-        /** The listener to invoke.
+        /** The listener to createControllerObjectAndInvokeMethod.
          */
         private final ProgressListener listener;
         /** Number of expected bytes, if known, or -1.
@@ -94,7 +94,7 @@ public class MultipartStream {
 
         /** Creates a new instance with the given listener
          * and content length.
-         * @param pListener The listener to invoke.
+         * @param pListener The listener to createControllerObjectAndInvokeMethod.
          * @param pContentLength The expected content length.
          */
         ProgressNotifier(ProgressListener pListener, long pContentLength) {

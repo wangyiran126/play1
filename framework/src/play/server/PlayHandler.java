@@ -323,7 +323,7 @@ public class PlayHandler extends SimpleChannelUpstreamHandler {
             // Check the exceeded size before re rendering so we can render the
             // error if the size is exceeded
             saveExceededSizeError(nettyRequest, request, response);
-            ActionInvoker.invoke(request, response);//调用controller方法
+            ActionInvoker.createControllerObjectAndInvokeMethod(request, response);//调用controller方法
         }
 
         @Override

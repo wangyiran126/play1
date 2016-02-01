@@ -1055,7 +1055,7 @@ public class F {
         @Override
         public String toString() {
             return "T5(_1: " + _1 + ", _2: " + _2 + ", _3:" + _3 + ", _4:" + _4 + ", _5:" + _5 + ")";
-        }
+    }
     }
 
     public static <A, B, C, D, E> T5<A, B, C, D, E> T5(A a, B b, C c, D d, E e) {

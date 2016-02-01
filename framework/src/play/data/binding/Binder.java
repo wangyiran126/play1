@@ -294,7 +294,7 @@ public abstract class Binder {
     }
 
     /**
-     * Does NOT invoke plugins
+     * Does NOT createControllerObjectAndInvokeMethod plugins
      */
     public static void bindBean(ParamNode paramNode, Object bean, Annotation[] annotations) throws Exception {
         internalBindBean(paramNode, bean, new BindingAnnotations(annotations));

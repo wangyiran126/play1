@@ -1258,7 +1258,7 @@ public class Controller implements ControllerSupport {
         }
     }
 
-    protected static <T> void await(Future<T> future, F.Action<T> callback) {
+    protected static <T> void await(Future<T> future, F.Action<T> callback) {//抛出suspend
         Request.current().isNew = false;
         Request.current().args.put(ActionInvoker.F, future);
         Request.current().args.put(ActionInvoker.A, callback);

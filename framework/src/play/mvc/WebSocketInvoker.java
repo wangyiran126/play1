@@ -25,7 +25,7 @@ public class WebSocketInvoker {
                 WebSocketController.class.getDeclaredField("validation").set(null, Validation.current());
             }
 
-            ActionInvoker.invoke(request, null);
+            ActionInvoker.createControllerObjectAndInvokeMethod(request, null);
 
         }catch (PlayException e) {
             throw e;

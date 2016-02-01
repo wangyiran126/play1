@@ -312,7 +312,7 @@ public abstract class FunctionalTest extends BaseTest {
             @Override
             public void execute() throws Exception {
                 renderArgs.clear();
-                ActionInvoker.invoke(request, response);
+                ActionInvoker.createControllerObjectAndInvokeMethod(request, response);
 
                 if (RenderArgs.current().data != null) {
                     renderArgs.putAll(RenderArgs.current().data);

@@ -79,9 +79,9 @@ public class NoRouteFoundException extends PlayException implements SourceAttach
             return String.format("No route able to display file <strong>%s</strong> was found.", file);
         }
         if(args == null) {
-            return String.format("No route able to invoke action <strong>%s</strong> was found.", action);
+            return String.format("No route able to createControllerObjectAndInvokeMethod action <strong>%s</strong> was found.", action);
         }
-        return String.format("No route able to invoke action <strong>%s</strong> with arguments <strong>%s</strong> was found.", action, args);
+        return String.format("No route able to createControllerObjectAndInvokeMethod action <strong>%s</strong> with arguments <strong>%s</strong> was found.", action, args);
     }
     
     @Override

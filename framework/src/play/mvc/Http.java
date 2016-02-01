@@ -215,7 +215,7 @@ public class Http {
          */
         public String encoding = Play.defaultWebEncoding;
         /**
-         * Controller to invoke
+         * Controller to createControllerObjectAndInvokeMethod
          */
         public String controller;
         /**

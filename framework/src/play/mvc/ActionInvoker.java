@@ -103,7 +103,7 @@ public class ActionInvoker {
 
     }
 
-    public static void invoke(Http.Request request, Http.Response response) {
+    public static void createControllerObjectAndInvokeMethod(Http.Request request, Http.Response response) {
         Monitor monitor = null;
 
         try {
@@ -159,7 +159,7 @@ public class ActionInvoker {
                 if (actionResult == null) {//先从缓存取结果,如果没有在调用url
                     ControllerInstrumentation.initActionCall();
                     try {
-                        inferResult(invokeControllerMethod(actionMethod));//创建controller类并调用url对应的方法
+                        inferResult(createControllerObjectAndInvokeMethod(actionMethod));//创建controller类并调用url对应的方法
                     } catch (Result result) {
                         actionResult = result;
                         // Cache it if needed
@@ -188,7 +188,7 @@ public class ActionInvoker {
                                 for (Class exception : exceptions) {
                                     if (exception.isInstance(args[0])) {
                                         mCatch.setAccessible(true);
-                                        inferResult(invokeControllerMethod(mCatch, args));
+                                        inferResult(createControllerObjectAndInvokeMethod(mCatch, args));
                                         break;
                                     }
                                 }
@@ -265,7 +265,7 @@ public class ActionInvoker {
         }
     }
 
-    private static boolean isActionMethod(Method method) {
+    private static boolean isControllerMethod(Method method) {
         if (method.isAnnotationPresent(Before.class)) {
             return false;
         }
@@ -313,7 +313,7 @@ public class ActionInvoker {
             }
             if (!skip) {
                 before.setAccessible(true);
-                inferResult(invokeControllerMethod(before));
+                inferResult(createControllerObjectAndInvokeMethod(before));
             }
         }
     }
@@ -347,7 +347,7 @@ public class ActionInvoker {
             }
             if (!skip) {
                 after.setAccessible(true);
-                inferResult(invokeControllerMethod(after));
+                inferResult(createControllerObjectAndInvokeMethod(after));
             }
         }
     }
@@ -405,11 +405,11 @@ public class ActionInvoker {
                     if (parameterTypes.length == 1 && parameterTypes[0] == Throwable.class) {
                         // invoking @Finally method with caughtException as
                         // parameter
-                        invokeControllerMethod(aFinally, new Object[] { caughtException });
+                        createControllerObjectAndInvokeMethod(aFinally, new Object[] { caughtException });
                     } else {
                         // invoce @Finally-method the regular way without
                         // caughtException
-                        invokeControllerMethod(aFinally, null);
+                        createControllerObjectAndInvokeMethod(aFinally, null);
                     }
                 }
             }
@@ -454,11 +454,11 @@ public class ActionInvoker {
         }
     }
 
-    public static Object invokeControllerMethod(Method method) throws Exception {
-        return invokeControllerMethod(method, null);
+    public static Object createControllerObjectAndInvokeMethod(Method method) throws Exception {
+        return createControllerObjectAndInvokeMethod(method, null);
     }
 
-    public static Object invokeControllerMethod(Method method, Object[] forceArgs) throws Exception {
+    public static Object createControllerObjectAndInvokeMethod(Method method, Object[] forceArgs) throws Exception {
         boolean isStatic = Modifier.isStatic(method.getModifiers());
         String declaringClassName = method.getDeclaringClass().getName();
         boolean isProbablyScala = declaringClassName.contains("$");
@@ -486,11 +486,11 @@ public class ActionInvoker {
             }
         }
 
-        return invoke(method, request.controllerInstance, args);//调用controller方法
+        return createControllerObjectAndInvokeMethod(method, request.controllerInstance, args);//调用controller方法
     }
 
-    static Object invoke(Method method, Object instance, Object[] realArgs) throws Exception {
-        if (isActionMethod(method)) {
+    static Object createControllerObjectAndInvokeMethod(Method method, Object instance, Object[] realArgs) throws Exception {
+        if (isControllerMethod(method)) {
             return invokeWithContinuation(method, instance, realArgs);
         } else {
             return method.invoke(instance, realArgs);

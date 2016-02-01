@@ -247,7 +247,7 @@ public class Invoker {
          * @param suspendRequest
          */
         public void suspend(Suspend suspendRequest) {
-            if (suspendRequest.task != null) {
+            if (suspendRequest.task != null) {//创建任务,并把invoker传进去
                 WaitForTasksCompletion.waitFor(suspendRequest.task, this);
             } else {
                 Invoker.invoke(this, suspendRequest.timeout);
@@ -278,7 +278,7 @@ public class Invoker {
                     onSuccess();
                 }
             } catch (Suspend e) {
-                suspend(e);
+                suspend(e);//接收suspend
                 after();
             } catch (Throwable e) {
                 onException(e);
@@ -388,7 +388,7 @@ public class Invoker {
                         Logger.warn("Start WaitForTasksCompletion");
                         instance.start();
                     }
-                    instance.queue.put(task, invocation);
+                    instance.queue.put(task, invocation);//task作为Key,task.isdone判断是否执行完
                 }
             }
         }
@@ -399,7 +399,7 @@ public class Invoker {
                 try {
                     if (!queue.isEmpty()) {
                         for (Future<?> task : new HashSet<Future<?>>(queue.keySet())) {
-                            if (task.isDone()) {
+                            if (task.isDone()) {//完成future,在执行action
                                 executor.submit(queue.get(task));
                                 queue.remove(task);
                             }

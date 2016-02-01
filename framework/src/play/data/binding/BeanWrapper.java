@@ -227,7 +227,7 @@ public abstract class BeanWrapper {
             try {
                 if (setter != null) {
                     if (Logger.isTraceEnabled()) {
-                        Logger.trace("invoke setter %s on %s with value %s", setter, instance, value);
+                        Logger.trace("createControllerObjectAndInvokeMethod setter %s on %s with value %s", setter, instance, value);
                     }
                     setter.invoke(instance, value);
                 } else {

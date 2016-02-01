@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URI;
-import java.net.URLDecoder;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.*;
@@ -564,7 +563,7 @@ public class ServletWrapper extends HttpServlet implements ServletContextListene
 
         @Override
         public void execute() throws Exception {
-            ActionInvoker.invoke(request, response);
+            ActionInvoker.createControllerObjectAndInvokeMethod(request, response);
             copyResponse(request, response, httpServletRequest, httpServletResponse);
         }
 

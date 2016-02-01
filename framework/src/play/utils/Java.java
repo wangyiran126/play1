@@ -405,7 +405,7 @@ public class Java {
             try {
                 if (setter != null) {
                     if (play.Logger.isTraceEnabled()) {
-                        play.Logger.trace("invoke setter %s on %s with value %s", setter, instance, value);
+                        play.Logger.trace("createControllerObjectAndInvokeMethod setter %s on %s with value %s", setter, instance, value);
                     }
                     setter.invoke(instance, value);
                 } else {
